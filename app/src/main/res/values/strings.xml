@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">hmkcopy</string>
+    <string name="default_error_message">Unexpected error occurred</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="first_item_top_desc">Siparişinizi verin siz gelmeden hazır olsun</string>
+    <string name="first_item_bottom_desc">Çıktısını almak istediğiniz belgeler için saatlerce sıra beklemenize gerek yok</string>
+    <string name="second_item_top_desc">Kargaşada kaybolmayın zaman kaybetmeyin</string>
+    <string name="second_item_bottom_desc">Sınav haftalarının yoğunluğunda zaman kaybetmeden hızlı ve kolayca sipariş verin</string>
+    <string name="register_with_phone_number">Telefon numarasıyla kaydol</string>
+    <string name="already_have_an_account">Zaten bir hesabım var</string>
+    <string name="login">Giriş yap</string>
+    <string name="create_new_account">Yeni hesap oluştur</string>
+    <string name="privacy_policy_text"> Üye olarak UniCopy’nin <a href='"wwww.sample.com"'>Hizmet Koşullarını ve Gizlilik Politikasını</a> kabul etmiş olursunuz</string>
+    <string name="register">Kayıt ol</string>
+    <string name="confirm">Onayla</string>
+    <string name="didnt_receive_code">Kod gelmedi mi?</string>
+    <string name="check_your_message_box">Mesaj kutunu kontrol et</string>
+    <string name="sms_receive_desc">Hesabınızı doğrulamanız için telefonunuza bir doğrulama kodu gönderdik.</string>
+    <string name="your_account_created">Hesabınız oluşturuldu</string>
+    <string name="account_created_desc">Çıktı almak istediğin dokuman için sipariş oluşturarak dilediğin baskı merkezinden sıra beklemeden teslim alabilirsin.</string>
+    <string name="create_order">Sipariş oluştur</string>
+    <string name="password">Şifre</string>
+    <string name="name_surname">Ad Soyad</string>
+    <string name="forget_password">Şifremi unuttum</string>
+    <string name="dont_worry_desc">Endişelenme! Bu sorunu hızlıca çözeceğiz.</string>
+    <string name="forget_password_desc">Kayıt olurken kullandığınız telefon numaranızı yazınız.</string>
+    <string name="create_new_password">Yeni şifre oluştur</string>
+    <string name="new_password_desc">Ancak, kişisel hesabınızın güvenliğini sağlamak için güçlü bir parola kullanmanızı öneririz.</string>
+    <string name="password_has_been_reset">Şifreniz sıfırlndı</string>
+    <string name="password_has_been_reset_desc">Şifreniz başarıyla sıfırlandı ve yeniden belirlendi. Şimdi kaldığınız yerden devam edebilirsiniz.</string>
+    <string name="continue_button">Devam et</string>
+    <string name="reset_password">Sıfırla</string>
+</resources>
