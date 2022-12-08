@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.application.hmkcopy">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
@@ -14,6 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SplashScreen"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyARsPi5TTxEcVKcaVuTRxX7rGVXZyhUuo0" />
+
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"
             android:theme="@style/Theme.SplashScreen"
@@ -23,7 +32,7 @@
             android:theme="@style/Theme.Hmkcopy"
             android:exported="false" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.home.MainActivity"
             android:theme="@style/Theme.Hmkcopy"
             android:exported="false" />
         <activity
@@ -36,6 +45,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

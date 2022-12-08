@@ -9,7 +9,12 @@
         android:id="@+id/onboardingFragment"
         android:name="com.application.hmkcopy.presentation.onboarding.OnboardingFragment"
         android:label="fragment_onboarding"
-        tools:layout="@layout/fragment_onboarding" />
+        tools:layout="@layout/fragment_onboarding" >
+        <action
+            android:id="@+id/action_onboardingFragment_to_nav_main"
+            app:destination="@id/nav_main" />
+    </fragment>
 
     <include app:graph="@navigation/nav_authentication" />
+    <include app:graph="@navigation/nav_main" />
 </navigation>

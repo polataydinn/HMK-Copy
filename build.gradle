@@ -5,6 +5,7 @@ buildscript {
         hilt_version = "2.42"
         lifecycle_version = "2.4.1"
         glide_version = "4.13.1"
+        gms_version = "4.3.10"
     }
 
     repositories {
@@ -14,6 +15,7 @@ buildscript {
     dependencies {
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
         classpath("com.google.dagger:hilt-android-gradle-plugin:$hilt_version")
+        classpath ("com.google.gms:google-services:$gms_version")
     }
 }
 plugins {

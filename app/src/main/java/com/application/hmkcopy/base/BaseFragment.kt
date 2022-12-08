@@ -11,6 +11,8 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.viewbinding.ViewBinding
 import com.application.hmkcopy.navigation.NavigationCommand
+import com.application.hmkcopy.presentation.home.MainActivity
+import com.application.hmkcopy.presentation.splash.SplashActivity
 import kotlinx.coroutines.flow.collectLatest
 
 abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
@@ -74,5 +76,13 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
     }
+
+    private inline fun <reified T> activityAs(): T? {
+        return activity as? T
+    }
+
+    fun mainActivity(): MainActivity? = activityAs<MainActivity>()
+
+    fun splashActivity(): SplashActivity? = activityAs<SplashActivity>()
 
 }

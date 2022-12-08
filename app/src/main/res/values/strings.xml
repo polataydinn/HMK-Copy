@@ -31,4 +31,18 @@
     <string name="password_has_been_reset_desc">Şifreniz başarıyla sıfırlandı ve yeniden belirlendi. Şimdi kaldığınız yerden devam edebilirsiniz.</string>
     <string name="continue_button">Devam et</string>
     <string name="reset_password">Sıfırla</string>
+    <string name="documents">Dökümanlarım</string>
+    <string name="my_orders">Siparişlerim</string>
+    <string name="ite_background_desc">ite background desc</string>
+    <string name="main_bottom_bar_icon">main bottom bar icon</string>
+    <string name="upload_date">Yüklenme Tarihi</string>
+    <string name="double_dot">:</string>
+    <string name="page_count">Sayfa sayısı</string>
+    <string name="document_category">Tür</string>
+    <string name="document_item_folder">document item folder</string>
+    <string name="download_note">Notu indir</string>
+    <string name="document_id">Döküman no</string>
+    <string name="choose_document">Dokümanı seç</string>
+    <string name="give_order">Baskıya gönder</string>
+    <string name="show_in_map">Haritada göster</string>
 </resources>

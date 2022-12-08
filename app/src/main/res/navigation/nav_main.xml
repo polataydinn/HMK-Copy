@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/myOrdersFragment">
+
+    <fragment
+        android:id="@+id/documentUploadFragment"
+        android:name="com.application.hmkcopy.presentation.home.DocumentUploadFragment"
+        android:label="fragment_document_upload"
+        tools:layout="@layout/fragment_document_upload" />
+    <fragment
+        android:id="@+id/myOrdersFragment"
+        android:name="com.application.hmkcopy.presentation.home.my_orders.MyOrdersFragment"
+        android:label="fragment_my_orders"
+        tools:layout="@layout/fragment_my_orders" >
+        <action
+            android:id="@+id/action_myOrdersFragment_to_copyCenterChooserFragment"
+            app:destination="@id/copyCenterChooserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/documentDetailFragment"
+        android:name="com.application.hmkcopy.presentation.home.DocumentDetailFragment"
+        android:label="fragment_document_detail"
+        tools:layout="@layout/fragment_document_detail" />
+    <fragment
+        android:id="@+id/copyCenterChooserFragment"
+        android:name="com.application.hmkcopy.presentation.home.copy_center.CopyCenterChooserFragment"
+        android:label="fragment_copy_center_chooser"
+        tools:layout="@layout/fragment_copy_center_chooser" >
+        <action
+            android:id="@+id/action_copyCenterChooserFragment_to_copyCenterMapFragment"
+            app:destination="@id/copyCenterMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/copyCenterMapFragment"
+        android:name="com.application.hmkcopy.presentation.home.CopyCenterMapFragment"
+        android:label="fragment_copy_center_map"
+        tools:layout="@layout/fragment_copy_center_map" />
+</navigation>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="14dp"
+    tools:context=".presentation.home.copy_center.CopyCenterChooserFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/copy_center_chooser_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        app:endIconMode="clear_text"
+        app:endIconDrawable="@drawable/ic_baseline_close_24"
+        app:boxBackgroundMode="none"
+        app:hintEnabled="false"
+        android:gravity="center_vertical"
+        android:background="@drawable/ic_search_background"
+        app:startIconDrawable="@drawable/ic_baseline_search">
+
+        <EditText
+            android:id="@+id/copy_center_search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/copy_center_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/row_copy_center_item"
+        android:layout_below="@+id/copy_center_chooser_search_view"
+        android:layout_alignParentBottom="true" />
+
+
+</RelativeLayout>

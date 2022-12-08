@@ -11,6 +11,7 @@ import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.data.model.OnboardingItem
 import com.application.hmkcopy.databinding.FragmentOnboardingBinding
 import com.application.hmkcopy.presentation.authentication.AuthenticationActivity
+import com.application.hmkcopy.presentation.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,7 +68,7 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding, OnboardingVie
 
     private fun switchToAuthenticationActivity() {
         activity?.let {
-            val intent = Intent(it, AuthenticationActivity::class.java)
+            val intent = Intent(it, MainActivity::class.java)
             startActivity(intent)
             it.finish()
         }

@@ -1,4 +1,4 @@
-package com.application.hmkcopy.presentation.authentication
+package com.application.hmkcopy.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,22 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.application.hmkcopy.base.BaseFragment
-import com.application.hmkcopy.databinding.FragmentRegisterNamePassBinding
+import com.application.hmkcopy.databinding.FragmentOrderNoteBinding
 
-class RegisterNamePassFragment :
-    BaseFragment<FragmentRegisterNamePassBinding, AuthenticationViewModel>() {
-    override val viewModel: AuthenticationViewModel by viewModels()
+class OrderNoteFragment : BaseFragment<FragmentOrderNoteBinding, CommonViewModel>() {
+    override val viewModel: CommonViewModel by viewModels()
 
     override fun layoutResource(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentRegisterNamePassBinding {
-        return FragmentRegisterNamePassBinding.inflate(inflater, container, false)
+    ): FragmentOrderNoteBinding {
+        return FragmentOrderNoteBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
     }
-
 }
