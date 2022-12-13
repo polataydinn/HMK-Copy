@@ -1,17 +1,19 @@
 package com.application.hmkcopy.presentation.authentication
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentAuthenticationBinding
+import com.application.hmkcopy.repository.user.UserHelper
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding, AuthenticationViewModel>() {
-    override val viewModel: AuthenticationViewModel by viewModels()
+    override val viewModel: AuthenticationViewModel by hiltNavGraphViewModels(R.id.nav_authentication)
 
     override fun layoutResource(
         inflater: LayoutInflater,
@@ -25,4 +27,15 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding, Authe
 
     }
 
+    override fun configureCallbacks() {
+        super.configureCallbacks()
+        binding.apply {
+            authenticationRegisterWithPhoneNumberButton.setOnClickListener {
+                viewModel.navigate(AuthenticationFragmentDirections.toEnterPhoneFragment())
+            }
+            authenticationLoginButton.setOnClickListener {
+                viewModel.navigate(AuthenticationFragmentDirections.toLoginFragment())
+            }
+        }
+    }
 }

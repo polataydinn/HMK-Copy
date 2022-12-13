@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_authentication">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_authentication"
+    app:startDestination="@id/authenticationFragment">
 
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_OTPinFragment"
+            app:destination="@id/OTPinFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerNamePassFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.RegisterNamePassFragment"
+        android:label="fragment_register_name_pass"
+        tools:layout="@layout/fragment_register_name_pass" >
+        <action
+            android:id="@+id/toOTPFragment"
+            app:destination="@id/OTPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/OTPinFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.OTPinFragment"
+        android:label="fragment_otp_pin"
+        tools:layout="@layout/fragment_otp_pin" >
+        <action
+            android:id="@+id/toAccountCreatedFragment"
+            app:destination="@id/accountCreatedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordResetDescFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.PasswordResetDescFragment"
+        android:label="fragment_password_reset_desc"
+        tools:layout="@layout/fragment_password_reset_desc" />
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" >
+        <action
+            android:id="@+id/action_resetPasswordFragment_to_passwordResetDescFragment"
+            app:destination="@id/passwordResetDescFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterPhoneFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.EnterPhoneFragment"
+        android:label="fragment_enter_phone"
+        tools:layout="@layout/fragment_enter_phone" >
+        <action
+            android:id="@+id/toRegisterWithPhoneNumberFragment"
+            app:destination="@id/registerNamePassFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.AuthenticationFragment"
+        android:label="fragment_authentication"
+        tools:layout="@layout/fragment_authentication" >
+        <action
+            android:id="@+id/toLoginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/toEnterPhoneFragment"
+            app:destination="@id/enterPhoneFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountCreatedFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.AccountCreatedFragment"
+        android:label="fragment_account_created"
+        tools:layout="@layout/fragment_account_created" />
 </navigation>

@@ -45,4 +45,26 @@
     <string name="choose_document">Dokümanı seç</string>
     <string name="give_order">Baskıya gönder</string>
     <string name="show_in_map">Haritada göster</string>
+    <string name="notification_settings">Bildirim Ayarları</string>
+    <string name="username">Kullanıcı adı</string>
+    <string name="mail_address">Email adresi</string>
+    <string name="phone_number">Telefon numarası</string>
+    <string name="profile_settings">Profil Ayarları</string>
+    <string name="user_info">Kullanıcı bilgileri</string>
+    <string name="mail_settings">Eposta ayarları</string>
+    <string name="password_settings">Şifre ayarları</string>
+    <string name="about_unicopy">UniCopy Hakkında</string>
+    <string name="support">Destek</string>
+    <string name="user_agreement">Kullanıcı sözleşmesi</string>
+    <string name="exit">Çıkış yap</string>
+    <string name="update">Güncelle</string>
+    <string name="current_mail">Geçerli eposta adresi</string>
+    <string name="new_mail">Yeni eposta adresi</string>
+    <string name="new_mail_repeat">Yeni eposta adresi tekrar</string>
+    <string name="current_pass">Geçerli şifre</string>
+    <string name="new_password">Yeni şifre</string>
+    <string name="new_password_repeat">Yeni şifre tekrar</string>
+    <string name="all_app_permissions">Tüm uygulama bildirimleri</string>
+    <string name="lorem">Lorem ipum</string>
+    <string name="user_agreement_text">Lorem ipsum dolor sit amet consectetur. Ac in congue vitae proin imperdiet adipiscing aliquet adipiscing. Nulla consequat ac nunc nulla integer aenean consequat tortor a. Et vitae blandit feugiat semper vitae cursus ut iaculis cursus. Non aliquet cras mauris cursus volutpat vulputate a amet sit. Et fringilla ac nibh sodales sit. Eget dictum elementum fermentum nulla nunc nisl amet. Facilisi ultricies tincidunt ut vestibulum tellus. Sit commodo vel duis sed neque fermentum at. Tristique tincidunt egestas accumsan lectus phasellus viverra nisi congue. Felis varius placerat a eget id ac enim a. Auctor mus aliquet cursus quis. Quis neque rhoncus eleifend sit natoque. Est amet sit pharetra sapien sit interdum pretium. Sed suspendisse nullam sagittis turpis integer enim. Etiam scelerisque blandit pharetra vel a aliquet. Ac molestie.</string>
 </resources>

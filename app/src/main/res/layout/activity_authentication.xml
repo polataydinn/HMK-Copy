@@ -6,4 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".presentation.authentication.AuthenticationActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/main_fragment_container_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:navGraph="@navigation/nav_authentication" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

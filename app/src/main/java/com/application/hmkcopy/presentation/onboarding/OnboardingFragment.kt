@@ -68,7 +68,7 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding, OnboardingVie
 
     private fun switchToAuthenticationActivity() {
         activity?.let {
-            val intent = Intent(it, MainActivity::class.java)
+            val intent = Intent(it, AuthenticationActivity::class.java)
             startActivity(intent)
             it.finish()
         }
