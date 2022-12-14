@@ -9,6 +9,8 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentAccountCreatedBinding
+import com.application.hmkcopy.navigation.NavigationCommand
+import com.application.hmkcopy.presentation.home.MainActivity
 
 class AccountCreatedFragment :
     BaseFragment<FragmentAccountCreatedBinding, AuthenticationViewModel>() {
@@ -24,6 +26,15 @@ class AccountCreatedFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun configureCallbacks() {
+        super.configureCallbacks()
+        binding.apply {
+            accountCreatedCreateOrderButton.setOnClickListener {
+                viewModel.navigate(NavigationCommand.ToActivity(MainActivity::class.java))
+            }
+        }
     }
 
 }

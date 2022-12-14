@@ -1,5 +1,6 @@
 package com.application.hmkcopy.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.viewbinding.ViewBinding
 import com.application.hmkcopy.navigation.NavigationCommand
 import com.application.hmkcopy.presentation.home.MainActivity
+import com.application.hmkcopy.presentation.onboarding.OnboardingActivity
 import com.application.hmkcopy.presentation.splash.SplashActivity
 import kotlinx.coroutines.flow.collectLatest
 
@@ -65,6 +67,11 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
             is NavigationCommand.ToId -> navController.navigate(navCommand.directionId, navCommand.bundle)
             is NavigationCommand.Back -> navController.popBackStack()
             is NavigationCommand.ToUri -> navController.navigate(navCommand.uri)
+            is NavigationCommand.ToActivity<*> -> {
+                val intent = Intent(activity, navCommand.activity)
+                startActivity(intent)
+                activity?.finishAffinity()
+            }
         }
     }
 

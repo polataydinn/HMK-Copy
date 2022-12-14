@@ -1,11 +1,12 @@
 package com.application.hmkcopy.repository.user
 
 import com.application.hmkcopy.service.Service
+import com.application.hmkcopy.service.request.LoginRequest
 import com.application.hmkcopy.service.request.RegisterRequest
 import com.application.hmkcopy.service.request.VerifyPhoneRequest
 import com.application.hmkcopy.service.response.ApiCallError
-import com.application.hmkcopy.service.response.RegisterResponse
 import com.application.hmkcopy.service.response.SendOTPResponse
+import com.application.hmkcopy.service.response.UserResponse
 import com.application.hmkcopy.util.extentions.castError
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,7 +19,7 @@ class UserRepository @Inject constructor(
         phoneNumber: String,
         name: String,
         password: String
-    ): RegisterResponse? = try{
+    ): UserResponse {
         val response = service.registerUser(
             RegisterRequest(
                 phone = phoneNumber,
@@ -26,20 +27,27 @@ class UserRepository @Inject constructor(
                 password = password
             )
         )
-         if (response.isSuccessful) {
-            response.body()
+        return if (response.isSuccessful) {
+            response.body() ?: UserResponse(
+                error = ApiCallError(
+                    "101",
+                    "Kayıt oluşturulurken hata oluştu"
+                )
+            )
         } else {
-            RegisterResponse(error = response.castError())
+            UserResponse(error = response.castError())
         }
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
     }
 
-    suspend fun requestOTP(): SendOTPResponse? {
+    suspend fun requestOTP(): SendOTPResponse {
         val response = service.sendVerificationCode()
         return if (response.isSuccessful) {
-            response.body()
+            response.body() ?: SendOTPResponse(
+                error = ApiCallError(
+                    "101",
+                    "Doğrulama kodu gönderilirken hata oluştu"
+                )
+            )
         } else {
             SendOTPResponse(error = response.castError())
         }
@@ -56,6 +64,25 @@ class UserRepository @Inject constructor(
             null
         } else {
             response.castError<Unit, ApiCallError>()
+        }
+    }
+
+    suspend fun login(phoneNumber: String, password: String): UserResponse {
+        val response = service.login(
+            LoginRequest(
+                phone = phoneNumber,
+                password = password
+            )
+        )
+        return if (response.isSuccessful) {
+            response.body() ?: UserResponse(
+                error = ApiCallError(
+                    "101",
+                    "Giriş yapılırken hata oluştu"
+                )
+            )
+        } else {
+            UserResponse(error = response.castError())
         }
     }
 }

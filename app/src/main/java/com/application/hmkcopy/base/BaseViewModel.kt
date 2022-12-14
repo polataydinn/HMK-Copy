@@ -35,6 +35,12 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
+    fun navigate(navigationCommand: NavigationCommand) {
+        viewModelScope.launch {
+            _navigation.emit(navigationCommand)
+        }
+    }
+
     fun navigateToDirectionId(directionId: Int, bundle: Bundle? = null) {
         viewModelScope.launch {
             _navigation.emit(NavigationCommand.ToId(directionId, bundle))

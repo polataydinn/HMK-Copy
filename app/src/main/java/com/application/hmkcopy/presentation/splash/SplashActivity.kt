@@ -1,11 +1,14 @@
 package com.application.hmkcopy.presentation.splash
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import androidx.appcompat.app.AppCompatActivity
 import com.application.hmkcopy.R
+import com.application.hmkcopy.presentation.home.MainActivity
 import com.application.hmkcopy.presentation.onboarding.OnboardingActivity
+import com.application.hmkcopy.repository.user.UserHelper
+import com.application.hmkcopy.service.response.User
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,11 +22,20 @@ class SplashActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                val intent = Intent(this@SplashActivity, OnboardingActivity::class.java)
+                val nextActivity = if (UserHelper.user.isValid() && (UserHelper.tokens != null)) {
+                    MainActivity::class.java
+                } else {
+                    OnboardingActivity::class.java
+                }
+                val intent = Intent(this@SplashActivity, nextActivity)
                 startActivity(intent)
                 finish()
             }
         }
         timer.start()
+    }
+
+    private fun User?.isValid(): Boolean {
+        return this != null && isPhoneVerified
     }
 }

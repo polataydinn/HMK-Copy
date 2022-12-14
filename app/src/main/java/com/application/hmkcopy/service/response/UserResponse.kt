@@ -3,7 +3,7 @@ package com.application.hmkcopy.service.response
 
 import com.google.gson.annotations.SerializedName
 
-data class RegisterResponse(
+data class UserResponse(
     @SerializedName("tokens")
     val tokens: Tokens = Tokens(),
     @SerializedName("user")
@@ -33,12 +33,20 @@ data class Refresh(
 )
 
 data class User(
+    @SerializedName("documents")
+    val documents: List<Any> = listOf(),
     @SerializedName("id")
     val id: String = "",
+    @SerializedName("isEmailVerified")
+    val isEmailVerified: Boolean = false,
+    @SerializedName("isPhoneVerified")
+    val isPhoneVerified: Boolean = false,
+    @SerializedName("isSeller")
+    val isSeller: Boolean = false,
     @SerializedName("name")
     val name: String = "",
     @SerializedName("phone")
-    val phone: Long = 0,
+    val phone: String = "",
     @SerializedName("role")
     val role: String = ""
 )

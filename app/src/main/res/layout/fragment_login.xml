@@ -40,12 +40,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/login_name_surname_input"
+        <EditText
+            android:id="@+id/login_phone_number"
             android:layout_width="0dp"
             android:layout_height="22dp"
             android:textColor="@color/black"
-            android:hint="@string/name_surname"
+            android:background="@color/white"
+            android:hint="@string/phone_number"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -75,11 +78,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <EditText
             android:id="@+id/login_password_input"
             android:layout_width="0dp"
             android:layout_height="22dp"
             android:textColor="@color/black"
+            android:background="@color/white"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
             android:hint="@string/password"
             android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="parent"

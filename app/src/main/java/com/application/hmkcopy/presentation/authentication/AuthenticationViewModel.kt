@@ -3,6 +3,8 @@ package com.application.hmkcopy.presentation.authentication
 import androidx.lifecycle.viewModelScope
 import com.application.hmkcopy.base.BaseViewModel
 import com.application.hmkcopy.event.Event
+import com.application.hmkcopy.navigation.NavigationCommand
+import com.application.hmkcopy.presentation.home.MainActivity
 import com.application.hmkcopy.repository.user.UserHelper
 import com.application.hmkcopy.repository.user.UserRepository
 import com.application.hmkcopy.service.ErrorModel
@@ -21,6 +23,10 @@ class AuthenticationViewModel @Inject constructor(
 
     fun onRegisterPhoneNumber(phoneNumber: String) {
         if (phoneNumber.isValidPhone()) {
+            if (phoneNumber.isEmpty()) {
+                errorMessage.value = Event(ErrorModel(message = "Lütfen telefon numarası giriniz"))
+                return
+            }
             UserHelper.phoneNumber = phoneNumber
             navigate(EnterPhoneFragmentDirections.toRegisterWithPhoneNumberFragment())
         }
@@ -53,12 +59,10 @@ class AuthenticationViewModel @Inject constructor(
     fun requestOTP() {
         viewModelScope.launch {
             val otpResponse = userRepository.requestOTP()
-            otpResponse?.let { response ->
-                if(response.error != null) {
-                    errorMessage.value = Event(ErrorModel(message = response.error.message))
-                } else  {
-                    otpToken = response.token
-                }
+            if(otpResponse.error != null) {
+                errorMessage.value = Event(ErrorModel(message = otpResponse.error.message))
+            } else  {
+                otpToken = otpResponse.token
             }
         }
     }
@@ -80,5 +84,31 @@ class AuthenticationViewModel @Inject constructor(
 
     fun resendOtp() {
         requestOTP()
+    }
+
+    fun login(phone: String, password: String) {
+        if (phone.isEmpty()) {
+            errorMessage.value = Event(ErrorModel(message = "Lütfen telefon numarası giriniz"))
+            return
+        }
+        if (password.isEmpty()) {
+            errorMessage.value = Event(ErrorModel(message = "Lütfen Bir şifre giriniz"))
+            return
+        }
+        viewModelScope.launch {
+            val loginResponse = userRepository.login(phone, password)
+            if (loginResponse.error != null) {
+                errorMessage.value = Event(ErrorModel(message = loginResponse.error.message))
+                return@launch
+            }
+            if(loginResponse.user.isPhoneVerified.not()) {
+                UserHelper.phoneNumber = loginResponse.user.phone
+                navigate(LoginFragmentDirections.toOTPFragment())
+                return@launch
+            }
+            UserHelper.user = loginResponse.user
+            UserHelper.tokens = loginResponse.tokens
+            navigate(NavigationCommand.ToActivity(MainActivity::class.java))
+        }
     }
 }
