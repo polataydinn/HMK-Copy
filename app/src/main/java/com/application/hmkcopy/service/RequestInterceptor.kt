@@ -3,7 +3,6 @@ package com.application.hmkcopy.service
 import aws.smithy.kotlin.runtime.http.HttpStatusCode
 import com.application.hmkcopy.repository.user.UserHelper
 import com.application.hmkcopy.service.request.RefreshTokenRequest
-import dagger.Provides
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response

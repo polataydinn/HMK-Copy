@@ -14,7 +14,7 @@
             android:id="@+id/toOTPFragment"
             app:destination="@id/OTPinFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            android:id="@+id/toResetPasswordFragment"
             app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
@@ -34,6 +34,14 @@
         <action
             android:id="@+id/toAccountCreatedFragment"
             app:destination="@id/accountCreatedFragment" />
+        <action
+            android:id="@+id/toResetPasswordFragment"
+            app:destination="@id/newPasswordFragment" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/passwordResetDescFragment"
@@ -46,8 +54,8 @@
         android:label="fragment_reset_password"
         tools:layout="@layout/fragment_reset_password" >
         <action
-            android:id="@+id/action_resetPasswordFragment_to_passwordResetDescFragment"
-            app:destination="@id/passwordResetDescFragment" />
+            android:id="@+id/toOTPFragment"
+            app:destination="@id/OTPinFragment" />
     </fragment>
     <fragment
         android:id="@+id/enterPhoneFragment"
@@ -75,4 +83,13 @@
         android:name="com.application.hmkcopy.presentation.authentication.AccountCreatedFragment"
         android:label="fragment_account_created"
         tools:layout="@layout/fragment_account_created" />
+    <fragment
+        android:id="@+id/newPasswordFragment"
+        android:name="com.application.hmkcopy.presentation.authentication.NewPasswordFragment"
+        android:label="fragment_new_password"
+        tools:layout="@layout/fragment_new_password" >
+        <action
+            android:id="@+id/toResetPasswordDescFragment"
+            app:destination="@id/passwordResetDescFragment" />
+    </fragment>
 </navigation>

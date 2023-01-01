@@ -10,6 +10,8 @@ import androidx.navigation.navGraphViewModels
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentResetPasswordBinding
+import com.application.hmkcopy.navigation.NavigationCommand
+import com.application.hmkcopy.util.extentions.isValidPhone
 
 class ResetPasswordFragment :
     BaseFragment<FragmentResetPasswordBinding, AuthenticationViewModel>() {
@@ -25,5 +27,17 @@ class ResetPasswordFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun configureCallbacks() {
+        super.configureCallbacks()
+        binding.apply {
+            resetPasswordBackButton.setOnClickListener {
+                viewModel.navigate(NavigationCommand.Back)
+            }
+            resetPasswordNextButton.setOnClickListener {
+                viewModel.onResetPasswordPhoneNumber(resetPasswordPhoneInput.text?.toString() ?: "")
+            }
+        }
     }
 }

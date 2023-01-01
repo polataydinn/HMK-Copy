@@ -10,6 +10,7 @@ import androidx.navigation.navGraphViewModels
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentNewPasswordBinding
+import com.application.hmkcopy.navigation.NavigationCommand
 
 class NewPasswordFragment : BaseFragment<FragmentNewPasswordBinding, AuthenticationViewModel>() {
     override val viewModel: AuthenticationViewModel by hiltNavGraphViewModels(R.id.nav_authentication)
@@ -24,5 +25,19 @@ class NewPasswordFragment : BaseFragment<FragmentNewPasswordBinding, Authenticat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun configureCallbacks() {
+        super.configureCallbacks()
+        binding.apply {
+            newPasswordResetButton.setOnClickListener {
+                val p1 = createNewPasswordInput.text?.toString() ?: ""
+                val p2 = createNewPasswordRepeatInput.text?.toString() ?: ""
+                viewModel.onSetNewPassword(p1, p2)
+            }
+            newPasswordBackButton.setOnClickListener {
+                viewModel.navigate(NavigationCommand.Back)
+            }
+        }
     }
 }

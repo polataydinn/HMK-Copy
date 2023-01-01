@@ -28,10 +28,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthenticationViewModel
 
     override fun configureCallbacks() {
         super.configureCallbacks()
-        binding.loginButton.setOnClickListener {
-            val phone = binding.loginPhoneNumber.text?.toString() ?: ""
-            val password = binding.loginPasswordInput.text?.toString() ?: ""
-            viewModel.login(phone, password)
+        binding.apply {
+            loginButton.setOnClickListener {
+                val phone = binding.loginPhoneNumber.text?.toString() ?: ""
+                val password = binding.loginPasswordInput.text?.toString() ?: ""
+                viewModel.login(phone, password)
+            }
+            loginFragmentForgetPasswordButton.setOnClickListener {
+                viewModel.navigate(LoginFragmentDirections.toResetPasswordFragment())
+            }
         }
     }
 
