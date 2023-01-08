@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.navigation.navGraphViewModels
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentEnterPhoneBinding
+import com.application.hmkcopy.event.Event
 import com.application.hmkcopy.repository.user.UserHelper
-import com.application.hmkcopy.util.extentions.isValidPhone
+import com.application.hmkcopy.service.ErrorModel
 
 class EnterPhoneFragment : BaseFragment<FragmentEnterPhoneBinding, AuthenticationViewModel>() {
     override val viewModel: AuthenticationViewModel by hiltNavGraphViewModels(R.id.nav_authentication)
@@ -41,11 +40,12 @@ class EnterPhoneFragment : BaseFragment<FragmentEnterPhoneBinding, Authenticatio
                 viewModel.onRegisterPhoneNumber(registerPhoneNumberInput.text.toString())
             }
             registerPhoneNumberInput.setOnEditorActionListener { _, actionId, _ ->
-                if(actionId == EditorInfo.IME_ACTION_NEXT) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
                     viewModel.onRegisterPhoneNumber(registerPhoneNumberInput.text.toString())
                     true
                 } else false
             }
         }
     }
+
 }

@@ -2,14 +2,23 @@ package com.application.hmkcopy.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.application.hmkcopy.base.BaseViewModel
 import com.application.hmkcopy.data.model.CopyCenterItem
 import com.application.hmkcopy.data.model.OrderListItem
+import com.application.hmkcopy.event.Event
+import com.application.hmkcopy.presentation.authentication.OTPinFragmentDirections
+import com.application.hmkcopy.repository.document.DocumentRepository
+import com.application.hmkcopy.service.ErrorModel
+import com.application.hmkcopy.service.response.DocumentsResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CommonViewModel : BaseViewModel() {
-
-    private var _listOfOrders: MutableLiveData<List<OrderListItem>> = MutableLiveData()
-    val listOfOrders: LiveData<List<OrderListItem>> get() = _listOfOrders
+@HiltViewModel
+class CommonViewModel @Inject constructor(
+    private val documentRepository: DocumentRepository
+) : BaseViewModel() {
 
     private var _isAnyItemSelected: MutableLiveData<Boolean> = MutableLiveData(false)
     val isAnyItemSelected: LiveData<Boolean> get() = _isAnyItemSelected
@@ -17,11 +26,12 @@ class CommonViewModel : BaseViewModel() {
     private var _copyCenterList: MutableLiveData<List<CopyCenterItem>> = MutableLiveData()
     val copyCenterList: LiveData<List<CopyCenterItem>> get() = _copyCenterList
 
-    fun setMockData() {
-        _listOfOrders.value = getMockData()
-    }
+    private val _documents = MutableLiveData<List<DocumentsResponse.Documents.Result>?>()
+    val documents get() = _documents
 
-    fun setCopyCenterListMockData(){
+    val isGetDocument = MutableLiveData(false)
+
+    fun setCopyCenterListMockData() {
         _copyCenterList.value = getCopyCenterList()
     }
 
@@ -78,59 +88,41 @@ class CommonViewModel : BaseViewModel() {
         ),
     )
 
-    fun setSelectedItem(orderListItem: OrderListItem) {
-        _listOfOrders.value = _listOfOrders.value?.map {
-            if (it == orderListItem) {
-                it.copy(isItemSelected = !orderListItem.isItemSelected)
+    fun setSelectedItem(document: DocumentsResponse.Documents.Result) {
+        _documents.value = _documents.value?.map {
+            if (it == document) {
+                it.copy(isItemSelected = !document.isItemSelected)
             } else {
-                it.copy(isItemSelected = false)
+                it.copy()
             }
         }
-        _isAnyItemSelected.value = listOfOrders.value?.firstOrNull { it.isItemSelected } != null
+        _isAnyItemSelected.value = _documents.value?.firstOrNull { it.isItemSelected } != null
     }
 
-    private fun getMockData(): List<OrderListItem> = listOf(
-        OrderListItem(
-            id = 1,
-            uploadDate = 1667122608L,
-            pageSize = 75,
-            documentType = "PDF",
-            lessonName = "Tıbbi terminoloji ders notu"
-        ),
-        OrderListItem(
-            id = 2,
-            uploadDate = 1667122608L,
-            pageSize = 75,
-            documentType = "PDF",
-            lessonName = "Tıbbi terminoloji ders notu2"
-        ),
-        OrderListItem(
-            id = 3,
-            uploadDate = 1667122608L,
-            pageSize = 75,
-            documentType = "PDF",
-            lessonName = "Tıbbi terminoloji ders notu3"
-        ),
-        OrderListItem(
-            id = 4,
-            uploadDate = 1667122608L,
-            pageSize = 75,
-            documentType = "PDF",
-            lessonName = "Tıbbi terminoloji ders notu4"
-        ),
-        OrderListItem(
-            id = 5,
-            uploadDate = 1667122608L,
-            pageSize = 75,
-            documentType = "PDF",
-            lessonName = "Tıbbi terminoloji ders notu5"
-        ),
-        OrderListItem(
-            id = 6,
-            uploadDate = 1667122608L,
-            pageSize = 75,
-            documentType = "PDF",
-            lessonName = "Tıbbi terminoloji ders notu6"
-        ),
-    )
+    fun getDocuments() {
+        viewModelScope.launch {
+            val response = documentRepository.getDocuments()
+            if (response.apiCallError == null) {
+                isGetDocument.postValue(true)
+                _documents.postValue(response.documents?.results as List<DocumentsResponse.Documents.Result>?)
+            } else {
+                errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
+            }
+        }
+
+    }
+
+    fun deleteDocument(id: String?) {
+        viewModelScope.launch {
+            val response = id?.let { documentRepository.deleteDocument(it) }
+            if (response != null) {
+                errorMessage.value = Event(ErrorModel(message = response.message))
+            } else {
+                navigateBack()
+            }
+        }
+    }
+    fun setIsAnyItemSelected(isItemSelected: Boolean){
+        _isAnyItemSelected.postValue(isItemSelected)
+    }
 }

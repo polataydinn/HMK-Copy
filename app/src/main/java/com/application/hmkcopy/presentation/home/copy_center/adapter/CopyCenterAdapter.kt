@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application.hmkcopy.base.BaseListAdapter
 import com.application.hmkcopy.data.model.CopyCenterItem
 import com.application.hmkcopy.databinding.RowCopyCenterItemBinding
+import com.application.hmkcopy.service.response.SellersResponseItem
 import com.application.hmkcopy.util.extentions.SizeUtils
 
 class CopyCenterAdapter :
-    BaseListAdapter<CopyCenterItem, CopyCenterViewHolder>(DIFF_UTIL_CALLBACK) {
+    BaseListAdapter<SellersResponseItem, CopyCenterViewHolder>(DIFF_UTIL_CALLBACK) {
 
-    var onItemClick: (() -> Unit)? = null
+    var onItemClick: ((SellersResponseItem) -> Unit)? = null
 
-    override fun bindView(holder: CopyCenterViewHolder, position: Int, item: CopyCenterItem) {
+    override fun bindView(holder: CopyCenterViewHolder, position: Int, item: SellersResponseItem) {
         holder.bind(getItem(position), onItemClick, itemCount, position)
     }
 
@@ -35,17 +36,17 @@ class CopyCenterAdapter :
     }
 
     companion object {
-        val DIFF_UTIL_CALLBACK = object : DiffUtil.ItemCallback<CopyCenterItem>() {
+        val DIFF_UTIL_CALLBACK = object : DiffUtil.ItemCallback<SellersResponseItem>() {
             override fun areItemsTheSame(
-                oldItem: CopyCenterItem,
-                newItem: CopyCenterItem
+                oldItem: SellersResponseItem,
+                newItem: SellersResponseItem
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: CopyCenterItem,
-                newItem: CopyCenterItem
+                oldItem: SellersResponseItem,
+                newItem: SellersResponseItem
             ): Boolean {
                 return oldItem == newItem
             }
@@ -56,19 +57,22 @@ class CopyCenterAdapter :
 
 class CopyCenterViewHolder(private val binding: RowCopyCenterItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: CopyCenterItem?, onItemClick: (() -> Unit)?, itemCount: Int, position: Int) {
+    fun bind(item: SellersResponseItem?, onItemClick: ((SellersResponseItem) -> Unit)?, itemCount: Int, position: Int) {
 
         binding.apply {
             if (itemCount == position + 1) {
                 val rootParams = root.layoutParams as ViewGroup.MarginLayoutParams
                 rootParams.bottomMargin = SizeUtils.int2dp(root.context, 56)
+            }else{
+                val rootParams = root.layoutParams as ViewGroup.MarginLayoutParams
+                rootParams.bottomMargin = SizeUtils.int2dp(root.context, 0)
             }
-
-            copyCenterAddress.text = item?.centerAddress
-            copyCenterName.text = item?.centerName
+            val address = item?.address.toString() + "\n" + item?.phone
+            copyCenterAddress.text = address
+            copyCenterName.text = item?.name
 
             copyCenterShowInMap.setOnClickListener {
-                onItemClick?.invoke()
+                item?.let { mItem -> onItemClick?.invoke(mItem) }
             }
         }
     }

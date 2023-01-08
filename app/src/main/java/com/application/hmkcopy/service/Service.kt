@@ -1,12 +1,10 @@
 package com.application.hmkcopy.service
 
 import com.application.hmkcopy.service.request.*
-import com.application.hmkcopy.service.response.UserResponse
-import com.application.hmkcopy.service.response.SendOTPResponse
-import com.application.hmkcopy.service.response.Tokens
+import com.application.hmkcopy.service.response.*
+import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface Service {
 
@@ -24,7 +22,7 @@ interface Service {
     @POST("auth/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<UserResponse>
 
-    @POST("auth/register")
+    @POST("auth/refresh-tokens")
     suspend fun refreshToken(@Body refreshTokenRequest: RefreshTokenRequest): Response<Tokens>
 
     @POST("auth/forgot-password")
@@ -36,4 +34,18 @@ interface Service {
     @POST("auth/reset-password")
     suspend fun resetPassword(@Body resetPasswordRequest: ResetPasswordRequest): Response<Unit>
 
+    @POST("user/document/upload")
+    suspend fun documentUpload(@Body documentRequest: UploadDocumentRequest): Response<UploadDocumentResponse>
+
+    @POST("user/document")
+    suspend fun uploadDocumentVerify(@Body uploadVerifyRequest: UploadVerifyRequest): Response<UploadVerifyResponse>
+
+    @GET("user/document")
+    suspend fun getDocuments(): Response<DocumentsResponse>
+
+    @DELETE("user/document/{documentId}")
+    suspend fun deleteDocument(@Path("documentId") documentId: String): Response<Unit>
+
+    @GET("seller")
+    suspend fun getAllSellers(): Response<SellersResponse>
 }

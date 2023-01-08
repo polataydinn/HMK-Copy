@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.application.hmkcopy.R
@@ -14,10 +15,13 @@ import com.application.hmkcopy.presentation.home.CommonViewModel
 import com.application.hmkcopy.presentation.home.MainActivity
 import com.application.hmkcopy.presentation.home.copy_center.adapter.CopyCenterAdapter
 import com.application.hmkcopy.presentation.home.my_orders.MyOrdersFragmentDirections
+import com.google.android.material.textfield.TextInputLayout
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CopyCenterChooserFragment :
-    BaseFragment<FragmentCopyCenterChooserBinding, CommonViewModel>() {
-    override val viewModel: CommonViewModel by viewModels()
+    BaseFragment<FragmentCopyCenterChooserBinding, CopyCenterViewModel>() {
+    override val viewModel: CopyCenterViewModel by viewModels()
 
     private val adapter: CopyCenterAdapter by lazy { CopyCenterAdapter() }
 
@@ -30,7 +34,7 @@ class CopyCenterChooserFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setCopyCenterListMockData()
+        viewModel.getSellers()
         setHeader()
         setAdapter()
         setObservers()
@@ -40,21 +44,25 @@ class CopyCenterChooserFragment :
     private fun setAdapter() {
         binding.copyCenterRecyclerView.adapter = adapter
         adapter.onItemClick = {
-            findNavController().navigate(R.id.action_copyCenterChooserFragment_to_copyCenterMapFragment)
+            viewModel.navigate(CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToCopyCenterMapFragment(it))
         }
     }
 
     private fun setObservers() {
-        viewModel.copyCenterList.observe(viewLifecycleOwner){
+        viewModel.sellers.observe(viewLifecycleOwner){
+            adapter.clear()
             adapter.submitList(it)
         }
     }
 
     private fun setButtonListeners() {
-        (activity as MainActivity).setBackButtonListeners {
+        mainActivity()?.setBackButtonListeners {
             if (navController.currentDestination?.label == "fragment_copy_center_chooser") {
-                findNavController().navigateUp()
+                viewModel.navigateBack()
             }
+        }
+        binding.copyCenterSearchEditText.addTextChangedListener {
+            viewModel.searchInSellers(it.toString())
         }
     }
 

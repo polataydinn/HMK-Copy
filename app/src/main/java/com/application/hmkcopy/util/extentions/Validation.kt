@@ -1,6 +1,7 @@
 package com.application.hmkcopy.util.extentions
 
+import androidx.core.text.isDigitsOnly
+
 fun String.isValidPhone(): Boolean {
-    // TODO: implement phone number checker regex
-    return true
+    return this.length == 10 && this.isDigitsOnly()
 }

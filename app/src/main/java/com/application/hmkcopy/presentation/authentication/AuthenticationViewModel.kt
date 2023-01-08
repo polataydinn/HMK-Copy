@@ -29,6 +29,8 @@ class AuthenticationViewModel @Inject constructor(
             }
             UserHelper.phoneNumber = phoneNumber
             navigate(EnterPhoneFragmentDirections.toRegisterWithPhoneNumberFragment())
+        }else {
+            errorMessage.value = Event(ErrorModel(message = "Lütfen 10 haneli numara giriniz"))
         }
     }
 

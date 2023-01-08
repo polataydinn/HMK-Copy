@@ -11,7 +11,9 @@ import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentMyOrdersBinding
 import com.application.hmkcopy.presentation.home.CommonViewModel
 import com.application.hmkcopy.presentation.home.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>() {
 
     override val viewModel: CommonViewModel by viewModels()
@@ -26,13 +28,14 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setMockData()
+        viewModel.getDocuments()
         setHeaders()
         setRecyclerView()
         setObservers()
         setItemListener()
         setButtonListeners()
         mainActivity()?.changeMainIconToArrow()
+        mainActivity()?.shouldRefreshDocuments { viewModel.getDocuments() }
     }
 
     private fun setHeaders() {
@@ -54,7 +57,11 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
     }
 
     private fun setObservers() {
-        viewModel.listOfOrders.observe(viewLifecycleOwner) {
+        viewModel.documents.observe(viewLifecycleOwner) {
+            if (viewModel.isGetDocument.value == true){
+                orderListAdapter.clear()
+                viewModel.isGetDocument.value = false
+            }
             orderListAdapter.submitList(it)
         }
 
@@ -73,7 +80,12 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
             viewModel.setSelectedItem(it)
         }
         orderListAdapter.onItemClickListener = {
-            Toast.makeText(requireContext(), "click seçildi", Toast.LENGTH_SHORT).show()
+            viewModel.navigate(MyOrdersFragmentDirections.actionMyOrdersFragmentToDocumentDetailFragment(it))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setIsAnyItemSelected(false)
     }
 }

@@ -1,5 +1,6 @@
 package com.application.hmkcopy.service
 
+import android.util.Log
 import aws.smithy.kotlin.runtime.http.HttpStatusCode
 import com.application.hmkcopy.repository.user.UserHelper
 import com.application.hmkcopy.service.request.RefreshTokenRequest
@@ -25,6 +26,7 @@ class RequestInterceptor @Inject constructor(
             secondRequest.addHeader(
                 "Authorization", "Bearer ${UserHelper.tokens?.access?.token ?: ""}"
             )
+            Log.d("RequestIntercepter", "Token refreshed : ${UserHelper.tokens?.access?.token}")
             chain.proceed(secondRequest.build())
         } else {
             result

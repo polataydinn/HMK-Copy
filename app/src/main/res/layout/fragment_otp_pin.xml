@@ -52,7 +52,7 @@
         app:itemHeight="50dp"
         android:cursorVisible="true"
         app:itemRadius="12dp"
-        app:itemSpacing="16dp"
+        app:itemSpacing="8dp"
         app:itemWidth="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,4 +1,4 @@
-package com.application.hmkcopy.presentation.home
+package com.application.hmkcopy.presentation.home.copy_center
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentCopyCenterDetailBinding
+import com.application.hmkcopy.presentation.home.CommonViewModel
 
 class CopyCenterDetailFragment : BaseFragment<FragmentCopyCenterDetailBinding, CommonViewModel>() {
 

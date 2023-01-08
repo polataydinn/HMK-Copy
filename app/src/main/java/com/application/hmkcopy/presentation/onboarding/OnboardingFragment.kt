@@ -12,6 +12,7 @@ import com.application.hmkcopy.data.model.OnboardingItem
 import com.application.hmkcopy.databinding.FragmentOnboardingBinding
 import com.application.hmkcopy.presentation.authentication.AuthenticationActivity
 import com.application.hmkcopy.presentation.home.MainActivity
+import com.application.hmkcopy.repository.user.UserHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,6 +68,7 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding, OnboardingVie
     )
 
     private fun switchToAuthenticationActivity() {
+        UserHelper.isOnBoardingShowed = true
         activity?.let {
             val intent = Intent(it, AuthenticationActivity::class.java)
             startActivity(intent)

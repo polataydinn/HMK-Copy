@@ -1,21 +1,17 @@
 package com.application.hmkcopy.di
 
-import android.content.Context
-import com.application.hmkcopy.repository.user.UserRepository
 import com.application.hmkcopy.service.RequestInterceptor
 import com.application.hmkcopy.service.Service
+import com.application.hmkcopy.service.UploadService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
-import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
@@ -53,6 +49,15 @@ object NetworkModule {
         ).build()
     }
 
+    @Provides
+    @Singleton
+    fun provideUploadServiceAmazon(okHttpClient: OkHttpClient): UploadService {
+        return Retrofit.Builder()
+            .baseUrl("https://testingdeneme.s3.eu-central-1.amazonaws.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(UploadService::class.java)
+    }
 
     @Provides
     @Singleton

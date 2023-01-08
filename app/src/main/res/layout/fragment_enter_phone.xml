@@ -48,7 +48,7 @@
             android:layout_height="22dp"
             android:textColor="@color/black"
             android:background="@color/white"
-            android:hint="+905400000000"
+            android:hint="5410000000"
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:layout_marginHorizontal="16dp"

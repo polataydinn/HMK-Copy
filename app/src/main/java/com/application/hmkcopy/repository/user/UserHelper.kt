@@ -40,6 +40,22 @@ object UserHelper {
             SharedPreferences.put(Key.user, Gson().toJson(value ?: ""))
         }
 
+    var isOnBoardingShowed: Boolean?
+        get() {
+            return try {
+                getObjectFromJson(
+                    SharedPreferences.getString(Key.onboardingStep),
+                    Boolean::class.java
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+        set(value) {
+            SharedPreferences.put(Key.onboardingStep, Gson().toJson(value ?: false))
+        }
+
     val id: String?
         get() {
             return user?.id
