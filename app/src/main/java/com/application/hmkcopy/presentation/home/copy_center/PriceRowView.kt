@@ -16,7 +16,7 @@ class PriceRowView(
         binding = PriceRowBinding.inflate(LayoutInflater.from(context), this, true)
 
         binding.name.text = paper.color + " " + paper.side
-        binding.value.text = "${paper.price} TL"
+        binding.value.text = ":  ${paper.price} TL"
     }
 
 
