@@ -9,8 +9,7 @@ class SelectableView(
     context: Context
 ) : ConstraintLayout(context) {
     private val binding: SelectectableViewBinding
-    var id: String = ""
-    var onCheckStateChanged : (String, Boolean) -> Unit = {_,_ -> }
+    var onCheckStateChanged: (Boolean) -> Unit = { }
 
     init {
         binding = SelectectableViewBinding.inflate(LayoutInflater.from(context), this, true)
@@ -19,7 +18,7 @@ class SelectableView(
 
     private fun setOnCheckboxSelected() {
         binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            onCheckStateChanged(id, isChecked)
+            onCheckStateChanged(isChecked)
         }
     }
 

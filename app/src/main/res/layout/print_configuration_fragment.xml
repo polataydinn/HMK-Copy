@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.home.copy_center.PrintConfigurationFragment">
 
-    <!--androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/print_configuration_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,9 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/row_print_settings" / !-->
+        tools:listitem="@layout/row_print_settings" />
 
-    <include android:id="@+id/container" layout="@layout/row_print_settings" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

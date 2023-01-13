@@ -54,4 +54,11 @@ interface Service {
 
     @PATCH("checkout/seller")
     suspend fun setSellerToCheckout(@Body sellerPatchRequest: SellerPatchRequest): Response<SellerPatchResponse>
+
+    @GET("checkout/all")
+    suspend fun checkout(): Response<CheckoutResponse>
+
+    @PATCH("checkout/{productId}")
+    suspend fun updateProduct(@Path("productId") productId: String, @Body updateBasketRequest: UpdateBasketRequest): Response<Unit>
+
 }

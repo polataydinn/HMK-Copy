@@ -2,10 +2,7 @@ package com.application.hmkcopy.repository.document
 
 import com.application.hmkcopy.service.Service
 import com.application.hmkcopy.service.UploadService
-import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
-import com.application.hmkcopy.service.request.SellerPatchRequest
-import com.application.hmkcopy.service.request.UploadDocumentRequest
-import com.application.hmkcopy.service.request.UploadVerifyRequest
+import com.application.hmkcopy.service.request.*
 import com.application.hmkcopy.service.response.*
 import com.application.hmkcopy.util.extentions.castError
 import com.application.hmkcopy.util.extentions.safeApiCall
@@ -138,5 +135,46 @@ class DocumentRepository @Inject constructor(
         } else {
             SellerPatchResponse(apiCallError = response.castError())
         }
+    }
+
+    suspend fun checkout(): CheckoutResponse {
+        val response = safeApiCall {
+            service.checkout()
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: CheckoutResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Sepet alınırken hata olustu"
+                )
+            )
+        } else {
+            CheckoutResponse(apiCallError = response.castError())
+        }
+    }
+
+    private suspend fun updateBasketInternal(productId: String, updateBasketRequest: UpdateBasketRequest): ApiCallError? {
+        val response = safeApiCall {
+            service.updateProduct(productId, updateBasketRequest)
+        }
+        return if (response.isSuccessful) {
+            null
+        } else {
+            response.castError<Unit, ApiCallError>()
+        }
+    }
+
+    suspend fun updateBasket(productId: String, updateBasketRequest: UpdateBasketRequest): CheckoutResponse {
+        val response = updateBasketInternal(productId, updateBasketRequest)
+        return if (response != null)
+            CheckoutResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Sepet güncellenemedi."
+                )
+            ) else {
+            checkout()
+        }
+
     }
 }

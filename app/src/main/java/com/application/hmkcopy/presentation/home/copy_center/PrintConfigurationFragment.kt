@@ -2,15 +2,20 @@ package com.application.hmkcopy.presentation.home.copy_center
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.PrintConfigurationFragmentBinding
+import com.application.hmkcopy.presentation.home.copy_center.adapter.PrintListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PrintConfigurationFragment :
     BaseFragment<PrintConfigurationFragmentBinding, PrintConfigurationViewModel>() {
     override val viewModel: PrintConfigurationViewModel by viewModels()
+    private val adapter: PrintListAdapter by lazy {
+        PrintListAdapter()
+    }
 
     override fun layoutResource(
         inflater: LayoutInflater,
@@ -20,16 +25,27 @@ class PrintConfigurationFragment :
     }
 
     override fun updateUI() {
-        val dd = DropDownView(requireContext())
-        dd.text1 = "hello world"
-        dd.text2 = "bottom"
-        dd.items = "HELLLO".map { it.toString() }
-        binding.container.printSettingsLinearContainer.addView(dd)
-        binding.container.printSettingsLinearContainer.addView(SelectableView(requireContext()).apply {
-            text1 = "hello aydin"
-            text2 = "something"
-            isChecked = true
-        })
-        print("a")
+        binding.printConfigurationRecyclerView.adapter = adapter
+    }
+
+    override fun configureObservers() {
+        super.configureCallbacks()
+        viewModel.checkout()
+        viewModel.items.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+    }
+
+    override fun configureCallbacks() {
+        adapter.onCheckStateChanged = { isChecked, id ->
+            Toast.makeText(requireContext(), "isChecked : $isChecked", Toast.LENGTH_SHORT).show()
+        }
+        adapter.onItemSelectedListener = { text, position, id ->
+            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+        }
+
+        adapter.onDocumentDownload = {
+
+        }
     }
 }
