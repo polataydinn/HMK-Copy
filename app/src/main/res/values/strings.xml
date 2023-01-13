@@ -68,4 +68,8 @@
     <string name="lorem">Lorem ipum</string>
     <string name="user_agreement_text">Lorem ipsum dolor sit amet consectetur. Ac in congue vitae proin imperdiet adipiscing aliquet adipiscing. Nulla consequat ac nunc nulla integer aenean consequat tortor a. Et vitae blandit feugiat semper vitae cursus ut iaculis cursus. Non aliquet cras mauris cursus volutpat vulputate a amet sit. Et fringilla ac nibh sodales sit. Eget dictum elementum fermentum nulla nunc nisl amet. Facilisi ultricies tincidunt ut vestibulum tellus. Sit commodo vel duis sed neque fermentum at. Tristique tincidunt egestas accumsan lectus phasellus viverra nisi congue. Felis varius placerat a eget id ac enim a. Auctor mus aliquet cursus quis. Quis neque rhoncus eleifend sit natoque. Est amet sit pharetra sapien sit interdum pretium. Sed suspendisse nullam sagittis turpis integer enim. Etiam scelerisque blandit pharetra vel a aliquet. Ac molestie.</string>
     <string name="document_upload">Dosya Yukle</string>
+    <string name="choose">Seç</string>
+    <string name="upload_date_with_two_dots">Yüklenme Tarihi : </string>
+    <string name="show_note">Notu Görüntüle</string>
+    <string name="choose_print_settings">Baskı Seçeneklerini Belirle</string>
 </resources>

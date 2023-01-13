@@ -7,6 +7,8 @@ import com.application.hmkcopy.base.BaseViewModel
 import com.application.hmkcopy.event.Event
 import com.application.hmkcopy.repository.document.DocumentRepository
 import com.application.hmkcopy.service.ErrorModel
+import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
+import com.application.hmkcopy.service.request.SellerPatchRequest
 import com.application.hmkcopy.service.response.SellersResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,6 +26,13 @@ class CopyCenterViewModel @Inject constructor(
     val selectedSeller: LiveData<SellersResponseItem?> get() = _selectedSeller
 
     private val mSellers = MutableLiveData<List<SellersResponseItem>>()
+
+    private val _isCreateBasketSuccessful = MutableLiveData(false)
+    val isCreateBasketSuccessful: LiveData<Boolean> get() = _isCreateBasketSuccessful
+
+    init {
+        _isCreateBasketSuccessful.postValue(false)
+    }
 
     fun getSellers() {
         viewModelScope.launch {
@@ -47,5 +56,35 @@ class CopyCenterViewModel @Inject constructor(
             (it.name?.lowercase()?.contains(search.lowercase()) == true ||
                     it.address?.lowercase()?.contains(search.lowercase()) == true)
         }
+    }
+
+    fun createCheckoutBasket(
+        createCheckoutBasketRequest: CreateCheckoutBasketRequest,
+        sellerId: String
+    ) {
+        viewModelScope.launch {
+            val response = documentRepository.createCheckoutBasket(createCheckoutBasketRequest)
+            if (response.apiCallError != null) {
+                errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
+            } else {
+                patchSeller(sellerId)
+            }
+        }
+    }
+
+    private fun patchSeller(sellerId: String) {
+        viewModelScope.launch {
+            val response =
+                documentRepository.setSellerPatch(SellerPatchRequest(sellerId = sellerId))
+            if (response.apiCallError != null) {
+                errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
+            } else {
+                _isCreateBasketSuccessful.postValue(true)
+            }
+        }
+    }
+
+    fun basketSuccessful(b: Boolean) {
+        _isCreateBasketSuccessful.value = b
     }
 }

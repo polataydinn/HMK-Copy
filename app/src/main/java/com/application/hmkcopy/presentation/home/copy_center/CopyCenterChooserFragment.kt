@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.data.model.CopyCenterItem
@@ -24,6 +25,7 @@ class CopyCenterChooserFragment :
     override val viewModel: CopyCenterViewModel by viewModels()
 
     private val adapter: CopyCenterAdapter by lazy { CopyCenterAdapter() }
+    private val args: CopyCenterChooserFragmentArgs by navArgs()
 
     override fun layoutResource(
         inflater: LayoutInflater,
@@ -39,12 +41,18 @@ class CopyCenterChooserFragment :
         setAdapter()
         setObservers()
         setButtonListeners()
+        setFabButton()
+    }
+
+    private fun setFabButton() {
+        mainActivity()?.makeFabButtonToChoose()
+        mainActivity()?.makeBottomButtonsInvisible()
     }
 
     private fun setAdapter() {
         binding.copyCenterRecyclerView.adapter = adapter
         adapter.onItemClick = {
-            viewModel.navigate(CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToCopyCenterMapFragment(it))
+            viewModel.navigate(CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToCopyCenterMapFragment(it, args.documentTransfer))
         }
     }
 
@@ -71,5 +79,11 @@ class CopyCenterChooserFragment :
             setPageTitle("Baskı Merkezini Seç")
             setBackButtonVisible()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity()?.makeFabButtonToLeftArrow()
+        mainActivity()?.makeBottomButtonsVisible()
     }
 }

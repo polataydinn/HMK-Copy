@@ -1,13 +1,14 @@
 package com.application.hmkcopy.service.response
 
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
+@Parcelize
 data class UploadVerifyResponse(
-    @SerialName("accessUsers")
-    val accessUsers: List<Any?>? = emptyList(),
     @SerialName("documentNumber")
     val documentNumber: String? = "",
     @SerialName("id")
@@ -23,5 +24,5 @@ data class UploadVerifyResponse(
     @SerialName("user")
     val user: UploadResponseUser? = UploadResponseUser(),
     val apiCallError: ApiCallError? = null
-)
+) : Parcelable
 

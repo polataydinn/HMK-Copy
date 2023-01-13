@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_copyCenterChooserFragment_to_copyCenterMapFragment"
             app:destination="@id/copyCenterMapFragment" />
+        <argument
+            android:name="documentTransfer"
+            app:argType="com.application.hmkcopy.data.model.DocumentTransfer" />
     </fragment>
     <fragment
         android:id="@+id/copyCenterMapFragment"
@@ -51,5 +54,16 @@
         <argument
             android:name="sellerResponseItem"
             app:argType="com.application.hmkcopy.service.response.SellersResponseItem" />
+        <action
+            android:id="@+id/toConfigurationFragment"
+            app:destination="@id/printConfigurationFragment" />
+        <argument
+            android:name="documentTransferMap"
+            app:argType="com.application.hmkcopy.data.model.DocumentTransfer" />
     </fragment>
+    <fragment
+        android:id="@+id/printConfigurationFragment"
+        android:name="com.application.hmkcopy.presentation.home.copy_center.PrintConfigurationFragment"
+        android:label="print_configuration_fragment"
+        tools:layout="@layout/print_configuration_fragment" />
 </navigation>

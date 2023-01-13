@@ -1,7 +1,10 @@
 package com.application.hmkcopy.service.response
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 
+@Parcelize
 data class UploadResponseUser(
     @SerialName("id")
     val id: String? = "",
@@ -19,4 +22,4 @@ data class UploadResponseUser(
     val registerDate: String? = "",
     @SerialName("role")
     val role: String? = ""
-)
+): Parcelable

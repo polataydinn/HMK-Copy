@@ -90,7 +90,7 @@ class OrderListViewHolder(private val binding: RowDocumentsItemBinding) :
             documentItemLessonName.text = document?.name?.substringBeforeLast(".")
             documentsItemDocumentType.text = document?.name?.substringAfterLast(".")
             documentsItemPageCount.text = document?.pageCount.toString() + " Sayfa"
-            documentsItemUploadDate.text = document?.uploadDate?.substring(0,10)
+            //documentsItemUploadDate.text = document?.uploadDate?.substring(0,10)
 
             documentItemNextButton.setOnClickListener {
                 document?.let { mDocument -> onItemClickListener?.invoke(mDocument) }

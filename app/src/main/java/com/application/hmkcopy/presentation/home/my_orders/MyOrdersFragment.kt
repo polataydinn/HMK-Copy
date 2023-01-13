@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.application.hmkcopy.base.BaseFragment
+import com.application.hmkcopy.data.model.DocumentTransfer
 import com.application.hmkcopy.databinding.FragmentMyOrdersBinding
 import com.application.hmkcopy.presentation.home.CommonViewModel
 import com.application.hmkcopy.presentation.home.MainActivity
@@ -47,10 +48,12 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
     }
 
     private fun setButtonListeners() {
-       mainActivity()?.setFabButtonClickListener {
+        mainActivity()?.setFabButtonClickListener {
             if (viewModel.isAnyItemSelected.value == true && navController.currentDestination?.label == "fragment_my_orders") {
+
+                val documents = DocumentTransfer(listOfDocuments = viewModel.documents.value?.filter { it.isItemSelected })
                 findNavController().navigate(
-                    MyOrdersFragmentDirections.actionMyOrdersFragmentToCopyCenterChooserFragment()
+                    MyOrdersFragmentDirections.actionMyOrdersFragmentToCopyCenterChooserFragment(documents)
                 )
             }
         }
@@ -58,10 +61,12 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
 
     private fun setObservers() {
         viewModel.documents.observe(viewLifecycleOwner) {
-            if (viewModel.isGetDocument.value == true){
+            if (viewModel.isGetDocument.value == true) {
                 orderListAdapter.clear()
                 viewModel.isGetDocument.value = false
             }
+            binding.noItemFoundContainer.isVisible = it.isNullOrEmpty()
+            binding.myOrdersRecyclerView.isVisible = it.isNullOrEmpty().not()
             orderListAdapter.submitList(it)
         }
 
@@ -80,7 +85,11 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
             viewModel.setSelectedItem(it)
         }
         orderListAdapter.onItemClickListener = {
-            viewModel.navigate(MyOrdersFragmentDirections.actionMyOrdersFragmentToDocumentDetailFragment(it))
+            viewModel.navigate(
+                MyOrdersFragmentDirections.actionMyOrdersFragmentToDocumentDetailFragment(
+                    it
+                )
+            )
         }
     }
 

@@ -127,6 +127,8 @@ class MainActivity : AppCompatActivity() {
 
     fun changeMainIconToArrow() {
         binding.mainFabButtonIcon.setImageResource(R.drawable.ic_arrow_right_main)
+        binding.mainFabButtonIcon.visibility = View.VISIBLE
+        binding.mainFabChooseButton.visibility = View.GONE
         binding.mainFabButton.tag = R.drawable.ic_arrow_right_main
     }
 
@@ -245,6 +247,26 @@ class MainActivity : AppCompatActivity() {
                 priceList.addView(PriceRowView(this@MainActivity, it))
             }
         }
+    }
+
+    fun makeBottomButtonsInvisible(){
+        binding.mainDocumentsButton.visibility = View.GONE
+        binding.mainOrdersButton.visibility = View.GONE
+    }
+    fun makeBottomButtonsVisible(){
+        binding.mainDocumentsButton.visibility = View.VISIBLE
+        binding.mainOrdersButton.visibility = View.VISIBLE
+    }
+
+    fun makeFabButtonToChoose(){
+        binding.mainFabButtonIcon.visibility = View.GONE
+        binding.mainFabChooseButton.visibility = View.VISIBLE
+        binding.mainFabButton.tag = 1000
+    }
+
+    fun makeFabButtonToLeftArrow(){
+        binding.mainFabButtonIcon.visibility = View.VISIBLE
+        binding.mainFabChooseButton.visibility = View.GONE
     }
 
     companion object {

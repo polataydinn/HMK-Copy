@@ -48,4 +48,10 @@ interface Service {
 
     @GET("seller")
     suspend fun getAllSellers(): Response<SellersResponse>
+
+    @POST("checkout")
+    suspend fun createCheckoutBasket(@Body createCheckoutBasketRequest: CreateCheckoutBasketRequest): Response<CreateCheckoutBasketResponse>
+
+    @PATCH("checkout/seller")
+    suspend fun setSellerToCheckout(@Body sellerPatchRequest: SellerPatchRequest): Response<SellerPatchResponse>
 }

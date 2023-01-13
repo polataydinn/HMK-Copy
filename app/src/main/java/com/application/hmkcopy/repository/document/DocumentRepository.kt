@@ -2,6 +2,8 @@ package com.application.hmkcopy.repository.document
 
 import com.application.hmkcopy.service.Service
 import com.application.hmkcopy.service.UploadService
+import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
+import com.application.hmkcopy.service.request.SellerPatchRequest
 import com.application.hmkcopy.service.request.UploadDocumentRequest
 import com.application.hmkcopy.service.request.UploadVerifyRequest
 import com.application.hmkcopy.service.response.*
@@ -103,6 +105,38 @@ class DocumentRepository @Inject constructor(
             )
         } else {
             SellersResponse(apiCallError = response.castError())
+        }
+    }
+
+    suspend fun createCheckoutBasket(createCheckoutBasketRequest: CreateCheckoutBasketRequest): CreateCheckoutBasketResponse {
+        val response = safeApiCall {
+            service.createCheckoutBasket(createCheckoutBasketRequest)
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: CreateCheckoutBasketResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Hata Olustu"
+                )
+            )
+        } else {
+            CreateCheckoutBasketResponse(apiCallError = response.castError())
+        }
+    }
+
+    suspend fun setSellerPatch(sellerPatchRequest: SellerPatchRequest): SellerPatchResponse {
+        val response = safeApiCall {
+            service.setSellerToCheckout(sellerPatchRequest)
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: SellerPatchResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Hata Olustu"
+                )
+            )
+        } else {
+            SellerPatchResponse(apiCallError = response.castError())
         }
     }
 }

@@ -21,6 +21,12 @@ class MainActivityViewModel @Inject constructor(
     private val _documents = MutableLiveData<DocumentsResponse>()
     val documents get() = _documents
 
+    val isChooseSelected = MutableLiveData<Boolean>()
+
+    init {
+        isChooseSelected.postValue(true)
+    }
+
     val isDialogDisable = MutableLiveData(false)
 
     fun uploadDocument(file: File, name: String) {
@@ -30,11 +36,11 @@ class MainActivityViewModel @Inject constructor(
             )
             if (checkResponse.error != null) {
                 errorMessage.value = Event(ErrorModel(message = checkResponse.error.message))
-            } else if (checkResponse.url != null && checkResponse.key != null) {
+            } else if (!checkResponse.presignedUrl?.url.isNullOrEmpty() && !checkResponse.presignedUrl?.key.isNullOrEmpty()) {
                 uploadImageWithNewUrl(
                     file = file,
-                    url = checkResponse.url.substringAfter(".amazonaws.com/"),
-                    key = checkResponse.key,
+                    url = checkResponse.presignedUrl?.url?.substringAfter(".amazonaws.com/") ?: "",
+                    key = checkResponse.presignedUrl?.url ?: "",
                     name = name
                 )
             }

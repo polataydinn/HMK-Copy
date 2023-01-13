@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentCopyCenterMapBinding
 import com.application.hmkcopy.presentation.home.copy_center.adapter.StoreMapInfoWindowAdapter
+import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
 import com.application.hmkcopy.service.response.SellersResponseItem
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -32,6 +34,8 @@ class CopyCenterMapFragment : BaseFragment<FragmentCopyCenterMapBinding, CopyCen
 
     private var googleMap: GoogleMap? = null
 
+    private val args: CopyCenterMapFragmentArgs by navArgs()
+
     override fun layoutResource(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -45,13 +49,38 @@ class CopyCenterMapFragment : BaseFragment<FragmentCopyCenterMapBinding, CopyCen
         initMap()
         viewModel.getSellers()
         setButtonListeners()
+        viewModel.basketSuccessful(false)
+        subscribeObservers()
+        mainActivity()?.makeBottomButtonsInvisible()
+    }
 
+    private fun subscribeObservers() {
+        viewModel.isCreateBasketSuccessful.observe(viewLifecycleOwner){
+            if (it){
+                viewModel.navigate(
+                    CopyCenterMapFragmentDirections.toConfigurationFragment()
+                )
+            }
+        }
     }
 
     private fun setButtonListeners() {
         mainActivity()?.setBackButtonListeners {
             if (navController.currentDestination?.label == "fragment_copy_center_map") {
                 viewModel.navigateBack()
+            }
+        }
+        mainActivity()?.setFabButtonClickListener {
+            if (navController.currentDestination?.label == "fragment_copy_center_map") {
+                viewModel.selectedSeller.value?.let { selectedSeller ->
+                    if (!selectedSeller.id.isNullOrEmpty() && !args.documentTransferMap.listOfDocuments.isNullOrEmpty()) {
+                        val documents = args.documentTransferMap.listOfDocuments?.filter { !it.id.isNullOrEmpty() }?.map { it.id }
+                        viewModel.createCheckoutBasket(
+                            CreateCheckoutBasketRequest(documents = documents as List<String>),
+                            selectedSeller.id
+                        )
+                    }
+                }
             }
         }
     }
@@ -78,7 +107,9 @@ class CopyCenterMapFragment : BaseFragment<FragmentCopyCenterMapBinding, CopyCen
         viewModel.selectedSeller.observe(viewLifecycleOwner) { seller ->
             if (seller != null) {
                 openBottomDialog(seller)
+                mainActivity()?.changeMainIconToArrow()
             } else {
+                mainActivity()?.makeFabButtonToChoose()
                 closeBottomDialog()
             }
         }
@@ -98,6 +129,7 @@ class CopyCenterMapFragment : BaseFragment<FragmentCopyCenterMapBinding, CopyCen
             }
         }
     }
+
 
     private fun openBottomDialog(seller: SellersResponseItem) {
         mainActivity()?.bottomSheetContainer?.isVisible = true
@@ -140,13 +172,15 @@ class CopyCenterMapFragment : BaseFragment<FragmentCopyCenterMapBinding, CopyCen
 
     override fun onPause() {
         super.onPause()
+        closeBottomDialog()
         binding.mapView.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mainActivity()?.bottomSheetContainer?.isVisible = false
+        closeBottomDialog()
         binding.mapView.onDestroy()
+        mainActivity()?.makeBottomButtonsVisible()
     }
 }
 
