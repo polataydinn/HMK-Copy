@@ -8,8 +8,6 @@ import retrofit2.http.*
 
 interface Service {
 
-    // Auth
-
     @POST("auth/register")
     suspend fun registerUser(@Body registerRequest: RegisterRequest): Response<UserResponse>
 
@@ -60,5 +58,8 @@ interface Service {
 
     @PATCH("checkout/{productId}")
     suspend fun updateProduct(@Path("productId") productId: String, @Body updateBasketRequest: UpdateBasketRequest): Response<Unit>
+
+    @GET("checkout/seller/options")
+    suspend fun getBasketOptions(): Response<BasketOptionsResponse>
 
 }

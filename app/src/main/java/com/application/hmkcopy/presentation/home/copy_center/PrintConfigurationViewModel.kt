@@ -25,7 +25,20 @@ class PrintConfigurationViewModel @Inject constructor(
             if (response.apiCallError != null) {
                 errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
             } else {
-                _items.value = response.toDomain()
+                getBasketOptions(response.toDomain())
+            }
+        }
+    }
+
+    private fun getBasketOptions(checkout: List<ProductListItem>) {
+        viewModelScope.launch {
+            val response = repository.getBasketOptions()
+            if (response.apiCallError != null) {
+                errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
+            } else {
+                val mCheckout = mutableListOf<ProductListItem>()
+                checkout.forEach { mCheckout.add(it.copy(basketOptions = response.printOptions)) }
+                _items.value = mCheckout
             }
         }
     }

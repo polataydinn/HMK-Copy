@@ -40,17 +40,26 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
 
     private fun LinearLayout.setUpOptions(item: ProductListItem) {
         removeAllViews()
-        item.priceInfoText.map {
-            val dd = DropDownView(context).apply {
-                text1 = it.name
-                text2 = it.price.toString()
-                items = item.priceInfoText.map { it.name }
-                onItemSelectedListener = { text, position ->
-                    this@PrintListAdapter.onItemSelectedListener(text, position, it.id)
-                }
+        val papers = item.basketOptions.map { it.size }
+        val paperSize = DropDownView(context).apply {
+            title = papers[0]
+            description = "210 mm x 193 mm"
+            items = papers
+            onItemSelectedListener = { text, position ->
+                this@PrintListAdapter.onItemSelectedListener(text, position, papers[0])
             }
-            addView(dd)
         }
+        addView(paperSize)
+        val verticalCopy = DropDownView(context).apply {
+            title = "Dikey Baskı Yönü"
+            description = "Dikey yönlü yazdırma"
+            items = listOf("Dikey Baskı Yönü","Yatay Baskı Yönü")
+            onItemSelectedListener = { text, position ->
+                this@PrintListAdapter.onItemSelectedListener(text, position, items[position])
+            }
+        }
+        addView(verticalCopy)
+
         item.priceInfoText.map {
             val selectableView = SelectableView(context).apply {
                 text1 = it.price.toString()

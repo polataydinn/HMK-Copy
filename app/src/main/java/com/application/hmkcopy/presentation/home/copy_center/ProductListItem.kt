@@ -1,6 +1,7 @@
 package com.application.hmkcopy.presentation.home.copy_center
 
 import android.os.Parcelable
+import com.application.hmkcopy.service.response.BasketOptionsResponse
 import com.application.hmkcopy.service.response.CheckoutResponse
 import kotlinx.parcelize.Parcelize
 
@@ -10,7 +11,8 @@ data class ProductListItem(
     val id: String,
     val prices: Prices,
     val priceInfoText: List<PriceInfoText>,
-    val uploadDate: String
+    val uploadDate: String,
+    val basketOptions: List<BasketOptionsResponse.PrintOption> = listOf(),
 ) : Parcelable {
     @Parcelize
     data class Prices(

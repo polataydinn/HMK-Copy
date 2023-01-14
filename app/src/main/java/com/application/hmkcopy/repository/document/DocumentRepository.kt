@@ -153,7 +153,10 @@ class DocumentRepository @Inject constructor(
         }
     }
 
-    private suspend fun updateBasketInternal(productId: String, updateBasketRequest: UpdateBasketRequest): ApiCallError? {
+    private suspend fun updateBasketInternal(
+        productId: String,
+        updateBasketRequest: UpdateBasketRequest
+    ): ApiCallError? {
         val response = safeApiCall {
             service.updateProduct(productId, updateBasketRequest)
         }
@@ -164,7 +167,10 @@ class DocumentRepository @Inject constructor(
         }
     }
 
-    suspend fun updateBasket(productId: String, updateBasketRequest: UpdateBasketRequest): CheckoutResponse {
+    suspend fun updateBasket(
+        productId: String,
+        updateBasketRequest: UpdateBasketRequest
+    ): CheckoutResponse {
         val response = updateBasketInternal(productId, updateBasketRequest)
         return if (response != null)
             CheckoutResponse(
@@ -176,5 +182,21 @@ class DocumentRepository @Inject constructor(
             checkout()
         }
 
+    }
+
+    suspend fun getBasketOptions(): BasketOptionsResponse {
+        val response = safeApiCall {
+            service.getBasketOptions()
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: BasketOptionsResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Sepet alınırken hata olustu"
+                )
+            )
+        } else {
+            BasketOptionsResponse(apiCallError = response.castError())
+        }
     }
 }

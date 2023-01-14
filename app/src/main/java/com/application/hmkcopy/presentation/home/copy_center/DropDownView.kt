@@ -20,13 +20,13 @@ class DropDownView(
     private var adapter = ArrayAdapter<String>(context, R.layout.drop_down_view, R.id.spinner_text)
 
 
-    var text1: String = ""
+    var title: String = ""
         set(value) {
             binding.text1.text = value
             field = value
         }
 
-    var text2: String = ""
+    var description: String = ""
         set(value) {
             binding.text2.text = value
             field = value
@@ -61,7 +61,7 @@ class DropDownView(
                 id: Long
             ) {
                 onItemSelectedListener(items[position], position)
-                text1 = items[position]
+                title = items[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) { }
