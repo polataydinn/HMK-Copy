@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -15,6 +16,8 @@ import com.application.hmkcopy.navigation.NavigationCommand
 import com.application.hmkcopy.presentation.authentication.AuthenticationActivity
 import com.application.hmkcopy.presentation.home.MainActivity
 import com.application.hmkcopy.presentation.splash.SplashActivity
+import com.application.hmkcopy.util.LoadingView
+import com.application.hmkcopy.util.extentions.delay
 import com.yagmurerdogan.toasticlib.Toastic
 import kotlinx.coroutines.flow.collectLatest
 
@@ -60,6 +63,15 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
                 Log.d("TAG", "observeNavigation: $message")
             }
         }
+        viewModel?.progress?.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { progress ->
+                if (progress) {
+                    showProgress()
+                } else {
+                    hideProgress()
+                }
+            }
+        }
     }
 
     fun errorToast(text: String) {
@@ -89,6 +101,30 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
                 startActivity(intent)
                 activity?.finishAffinity()
             }
+        }
+    }
+
+    private fun showProgress() {
+        val parent = binding.root as? ViewGroup
+        val child = parent?.children?.firstOrNull { it.tag == -946 }
+        if (child == null) {
+            val progress = context?.let { LoadingView(it) }
+            progress?.set()
+            delay(100) {
+                progress?.let {
+                    progress.tag = -946
+
+                    parent?.addView(it)
+                }
+            }
+        }
+    }
+
+    private fun hideProgress() {
+        val parent = binding.root as? ViewGroup
+        val child = parent?.children?.firstOrNull { it.tag == -946 }
+        child?.let {
+            parent.removeView(it)
         }
     }
 

@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import com.application.hmkcopy.R
 import com.application.hmkcopy.databinding.SpinnerViewBinding
 
@@ -18,7 +19,7 @@ class DropDownView(
     val binding: SpinnerViewBinding
     var onItemSelectedListener: (String, Int) -> Unit = { _, _ -> }
     private var adapter = ArrayAdapter<String>(context, R.layout.drop_down_view, R.id.spinner_text)
-
+    private var ignoreFirstSelect: Boolean = false
 
     var title: String = ""
         set(value) {
@@ -37,6 +38,13 @@ class DropDownView(
         set(value) {
             field = value
             setItems()
+        }
+    var arrowVisibility: Boolean = true
+        set(value) {
+            binding.arrowDown.isVisible = value
+            binding.spinner.isEnabled = value
+            binding.spinner.isClickable = value
+            field = value
         }
 
     init {
@@ -60,8 +68,11 @@ class DropDownView(
                 position: Int,
                 id: Long
             ) {
-                onItemSelectedListener(items[position], position)
-                title = items[position]
+                if (ignoreFirstSelect){
+                    onItemSelectedListener(items[position], position)
+                    title = items[position]
+                }
+                ignoreFirstSelect = true
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) { }

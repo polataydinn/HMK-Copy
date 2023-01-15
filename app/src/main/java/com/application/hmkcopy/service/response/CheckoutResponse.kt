@@ -1,5 +1,7 @@
 package com.application.hmkcopy.service.response
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class CheckoutResponse(
     @SerializedName("checkout")
@@ -24,7 +26,7 @@ data class CheckoutResponse(
         @SerializedName("status")
         val status: String = "",
         @SerializedName("totalAmount")
-        val totalAmount: Int = 0,
+        val totalAmount: Double = 0.0,
         @SerializedName("user")
         val user: String = ""
     ) {
@@ -67,18 +69,18 @@ data class CheckoutResponse(
                 @SerializedName("name")
                 val name: String = "",
                 @SerializedName("price")
-                val price: Int = 0
+                val price: Double = 0.0
             )
 
             data class Prices(
                 @SerializedName("coloredPrice")
-                val coloredPrice: Int = 0,
+                val coloredPrice: Double = 0.0,
                 @SerializedName("price")
-                val price: Int = 0,
+                val price: Double = 0.0,
                 @SerializedName("spiralledPrice")
-                val spiralledPrice: Int = 0
+                val spiralledPrice: Double = 0.0
             )
-
+            @Parcelize
             data class PrintOptions(
                 @SerializedName("isColored")
                 val isColored: Boolean = false,
@@ -94,7 +96,7 @@ data class CheckoutResponse(
                 val paperSize: String = "",
                 @SerializedName("paperSquare")
                 val paperSquare: Int = 0
-            )
+            ) : Parcelable
         }
     }
 }

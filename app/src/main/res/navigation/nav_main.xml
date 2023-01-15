@@ -65,5 +65,14 @@
         android:id="@+id/printConfigurationFragment"
         android:name="com.application.hmkcopy.presentation.home.copy_center.PrintConfigurationFragment"
         android:label="print_configuration_fragment"
-        tools:layout="@layout/print_configuration_fragment" />
+        tools:layout="@layout/print_configuration_fragment" >
+        <action
+            android:id="@+id/action_printConfigurationFragment_to_confirmOrderFragment"
+            app:destination="@id/confirmOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmOrderFragment"
+        android:name="com.application.hmkcopy.presentation.home.copy_center.ConfirmOrderFragment"
+        android:label="fragment_confirm_order"
+        tools:layout="@layout/fragment_confirm_order" />
 </navigation>

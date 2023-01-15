@@ -2,7 +2,10 @@ package com.application.hmkcopy.repository.document
 
 import com.application.hmkcopy.service.Service
 import com.application.hmkcopy.service.UploadService
-import com.application.hmkcopy.service.request.*
+import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
+import com.application.hmkcopy.service.request.SellerPatchRequest
+import com.application.hmkcopy.service.request.UploadDocumentRequest
+import com.application.hmkcopy.service.request.UploadVerifyRequest
 import com.application.hmkcopy.service.response.*
 import com.application.hmkcopy.util.extentions.castError
 import com.application.hmkcopy.util.extentions.safeApiCall
@@ -155,7 +158,7 @@ class DocumentRepository @Inject constructor(
 
     private suspend fun updateBasketInternal(
         productId: String,
-        updateBasketRequest: UpdateBasketRequest
+        updateBasketRequest: CheckoutResponse.Checkout.Product.PrintOptions
     ): ApiCallError? {
         val response = safeApiCall {
             service.updateProduct(productId, updateBasketRequest)
@@ -169,19 +172,19 @@ class DocumentRepository @Inject constructor(
 
     suspend fun updateBasket(
         productId: String,
-        updateBasketRequest: UpdateBasketRequest
+        updateBasketRequest: CheckoutResponse.Checkout.Product.PrintOptions
     ): CheckoutResponse {
         val response = updateBasketInternal(productId, updateBasketRequest)
-        return if (response != null)
+        return if (response != null) {
             CheckoutResponse(
                 apiCallError = ApiCallError(
                     "101",
                     "Sepet güncellenemedi."
                 )
-            ) else {
+            )
+        } else {
             checkout()
         }
-
     }
 
     suspend fun getBasketOptions(): BasketOptionsResponse {
@@ -197,6 +200,22 @@ class DocumentRepository @Inject constructor(
             )
         } else {
             BasketOptionsResponse(apiCallError = response.castError())
+        }
+    }
+
+    suspend fun downloadDocumentInternal(documentId: String): UploadDocumentResponse{
+        val response = safeApiCall {
+            service.downloadDocument(documentId)
+        }
+        return if (response.isSuccessful && response.body()?.presignedUrl?.url?.isNotEmpty() == true) {
+            response.body() ?: UploadDocumentResponse(
+                error = ApiCallError(
+                    "101",
+                    "Sepet alınırken hata olustu"
+                )
+            )
+        } else {
+            UploadDocumentResponse(error = response.castError())
         }
     }
 }

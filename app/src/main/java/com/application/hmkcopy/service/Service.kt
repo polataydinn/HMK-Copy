@@ -57,9 +57,12 @@ interface Service {
     suspend fun checkout(): Response<CheckoutResponse>
 
     @PATCH("checkout/{productId}")
-    suspend fun updateProduct(@Path("productId") productId: String, @Body updateBasketRequest: UpdateBasketRequest): Response<Unit>
+    suspend fun updateProduct(@Path("productId") productId: String, @Body updateBasketRequest: CheckoutResponse.Checkout.Product.PrintOptions): Response<Unit>
 
     @GET("checkout/seller/options")
     suspend fun getBasketOptions(): Response<BasketOptionsResponse>
+
+    @GET("user/document/{documentId}/download")
+    suspend fun downloadDocument(@Path("documentId") documentId: String):Response<UploadDocumentResponse>
 
 }

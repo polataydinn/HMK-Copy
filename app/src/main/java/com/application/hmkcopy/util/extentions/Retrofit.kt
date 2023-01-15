@@ -1,5 +1,6 @@
 package com.application.hmkcopy.util.extentions
 
+import android.util.Log
 import com.application.hmkcopy.service.response.ApiCallError
 import com.google.gson.Gson
 import okhttp3.ResponseBody.Companion.toResponseBody

@@ -2,7 +2,6 @@ package com.application.hmkcopy.presentation.home.copy_center
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.PrintConfigurationFragmentBinding
@@ -26,6 +25,18 @@ class PrintConfigurationFragment :
 
     override fun updateUI() {
         binding.printConfigurationRecyclerView.adapter = adapter
+        mainActivity()?.setPageDesc("Baskı Merkezi")
+        mainActivity()?.setPageTitle("Online Copy Center")
+        mainActivity()?.setBackButtonListeners {
+            if (navController.currentDestination?.label == "print_configuration_fragment") {
+                viewModel.navigateBack()
+            }
+        }
+        mainActivity()?.setFabButtonClickListener {
+            if (navController.currentDestination?.label == "print_configuration_fragment") {
+                viewModel.navigate(PrintConfigurationFragmentDirections.actionPrintConfigurationFragmentToConfirmOrderFragment())
+            }
+        }
     }
 
     override fun configureObservers() {
@@ -37,15 +48,19 @@ class PrintConfigurationFragment :
     }
 
     override fun configureCallbacks() {
-        adapter.onCheckStateChanged = { isChecked, id ->
-            Toast.makeText(requireContext(), "isChecked : $isChecked", Toast.LENGTH_SHORT).show()
+        adapter.onCheckStateChanged = { isChecked, itemId, options ->
+            viewModel.updateBasket(options, itemId, isChecked = isChecked)
         }
-        adapter.onItemSelectedListener = { text, position, id ->
-            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+        adapter.onItemSelectedListener = { text, itemId, options ->
+            viewModel.updateBasket(options, itemId, text = text)
         }
 
         adapter.onDocumentDownload = {
 
+        }
+
+        adapter.isExpanded = {
+            viewModel.updateExpandData(it)
         }
     }
 }

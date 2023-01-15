@@ -12,19 +12,21 @@ data class ProductListItem(
     val prices: Prices,
     val priceInfoText: List<PriceInfoText>,
     val uploadDate: String,
+    val printOptions: CheckoutResponse.Checkout.Product.PrintOptions,
     val basketOptions: List<BasketOptionsResponse.PrintOption> = listOf(),
+    val isExpanded: Boolean = false
 ) : Parcelable {
     @Parcelize
     data class Prices(
-        val coloredPrice: Int = 0,
-        val price: Int = 0,
-        val spiralledPrice: Int = 0
+        val coloredPrice: Double = 0.0,
+        val price: Double = 0.0,
+        val spiralledPrice: Double = 0.0
     ) : Parcelable
     @Parcelize
     data class PriceInfoText(
         val id: String = "",
         val name: String = "",
-        val price: Int = 0
+        val price: Double = 0.0
     ) : Parcelable
 }
 
@@ -47,7 +49,8 @@ fun CheckoutResponse.toDomain(): List<ProductListItem> {
             id = it.id,
             prices = it.prices.toDomain(),
             priceInfoText = it.priceInfoText.map { it.toDomain() },
-            uploadDate = "13-01-2023"
+            uploadDate = "13-01-2023",
+            printOptions = it.printOptions
         )
     }
 }
