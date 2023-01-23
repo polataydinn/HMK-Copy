@@ -21,17 +21,19 @@ class PrintConfigurationViewModel @Inject constructor(
 
     private val _items = MutableLiveData<List<ProductListItem>>()
     val items: LiveData<List<ProductListItem>> get() = _items
+    
+    private val _totalPrice = MutableLiveData<String>()
+    val totalPrice: LiveData<String> get() = _totalPrice
 
     fun checkout() {
-        toggleProgress(true)
         viewModelScope.launch {
             val response = repository.checkout()
             if (response.apiCallError != null) {
                 errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
             } else {
+                _totalPrice.value = response.checkout.totalAmount.toString()
                 getBasketOptions(response.toDomain())
             }
-            toggleProgress(false)
         }
     }
 
@@ -52,7 +54,6 @@ class PrintConfigurationViewModel @Inject constructor(
         itemId: String,
         updateBasketRequest: CheckoutResponse.Checkout.Product.PrintOptions
     ) {
-        toggleProgress(true)
         viewModelScope.launch {
             val response = repository.updateBasket(itemId, updateBasketRequest)
             if (response.apiCallError != null) {
@@ -70,7 +71,6 @@ class PrintConfigurationViewModel @Inject constructor(
                             ?.let { mCheckout.add(it) }
                     }
                 _items.value = mCheckout
-                toggleProgress(false)
             }
         }
     }

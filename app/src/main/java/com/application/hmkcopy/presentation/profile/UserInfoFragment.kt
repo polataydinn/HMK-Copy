@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentUserInfoBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, ProfileViewModel>() {
     override val viewModel: ProfileViewModel by viewModels()
 
@@ -20,6 +22,17 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, ProfileViewModel>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getUserData()
+    }
 
+    override fun updateUI() {
+        super.updateUI()
+        profileActivity()?.setTitleVisibility(true)
+        profileActivity()?.setTitleText("Kullanıcı Bilgileri")
+        profileActivity()?.setBackButtonListener {
+            if (navController.currentDestination?.label == "fragment_user_info"){
+                viewModel.navigateBack()
+            }
+        }
     }
 }

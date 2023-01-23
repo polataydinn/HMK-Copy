@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.application.hmkcopy.base.BaseListAdapter
-import com.application.hmkcopy.data.model.CopyCenterItem
 import com.application.hmkcopy.databinding.RowCopyCenterItemBinding
 import com.application.hmkcopy.service.response.SellersResponseItem
 import com.application.hmkcopy.util.extentions.SizeUtils
@@ -14,10 +13,11 @@ import com.application.hmkcopy.util.extentions.SizeUtils
 class CopyCenterAdapter :
     BaseListAdapter<SellersResponseItem, CopyCenterViewHolder>(DIFF_UTIL_CALLBACK) {
 
+    var onShowInMapClick: ((SellersResponseItem) -> Unit)? = null
     var onItemClick: ((SellersResponseItem) -> Unit)? = null
 
     override fun bindView(holder: CopyCenterViewHolder, position: Int, item: SellersResponseItem) {
-        holder.bind(getItem(position), onItemClick, itemCount, position)
+        holder.bind(getItem(position), onShowInMapClick, onItemClick, itemCount, position)
     }
 
     override fun createView(
@@ -57,22 +57,30 @@ class CopyCenterAdapter :
 
 class CopyCenterViewHolder(private val binding: RowCopyCenterItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: SellersResponseItem?, onItemClick: ((SellersResponseItem) -> Unit)?, itemCount: Int, position: Int) {
+    fun bind(
+        item: SellersResponseItem?,
+        onShowInMapClick: ((SellersResponseItem) -> Unit)?,
+        onItemClick: ((SellersResponseItem) -> Unit)?,
+        itemCount: Int,
+        position: Int
+    ) {
 
         binding.apply {
             if (itemCount == position + 1) {
                 val rootParams = root.layoutParams as ViewGroup.MarginLayoutParams
                 rootParams.bottomMargin = SizeUtils.int2dp(root.context, 56)
-            }else{
+            } else {
                 val rootParams = root.layoutParams as ViewGroup.MarginLayoutParams
                 rootParams.bottomMargin = SizeUtils.int2dp(root.context, 0)
             }
             val address = item?.address.toString() + "\n" + item?.phone
             copyCenterAddress.text = address
             copyCenterName.text = item?.name
-
-            copyCenterShowInMap.setOnClickListener {
+            root.setOnClickListener {
                 item?.let { mItem -> onItemClick?.invoke(mItem) }
+            }
+            copyCenterShowInMap.setOnClickListener {
+                item?.let { mItem -> onShowInMapClick?.invoke(mItem) }
             }
         }
     }

@@ -21,6 +21,17 @@
         <action
             android:id="@+id/action_myOrdersFragment_to_documentDetailFragment"
             app:destination="@id/documentDetailFragment" />
+        <action
+            android:id="@+id/action_myOrdersFragment_to_paymentErrorFragment"
+            app:destination="@id/paymentErrorFragment" />
+        <action
+            android:id="@+id/action_myOrdersFragment_to_paymentSuccessfulFragment"
+            app:destination="@id/paymentSuccessfulFragment" />
+        <action
+            android:id="@+id/action_myOrdersFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/documentDetailFragment"
@@ -45,6 +56,9 @@
         <argument
             android:name="documentTransfer"
             app:argType="com.application.hmkcopy.data.model.DocumentTransfer" />
+        <action
+            android:id="@+id/action_copyCenterChooserFragment_to_printConfigurationFragment"
+            app:destination="@id/printConfigurationFragment" />
     </fragment>
     <fragment
         android:id="@+id/copyCenterMapFragment"
@@ -74,5 +88,28 @@
         android:id="@+id/confirmOrderFragment"
         android:name="com.application.hmkcopy.presentation.home.copy_center.ConfirmOrderFragment"
         android:label="fragment_confirm_order"
-        tools:layout="@layout/fragment_confirm_order" />
+        tools:layout="@layout/fragment_confirm_order" >
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_paymentWebViewFragment"
+            app:destination="@id/paymentWebViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentErrorFragment"
+        android:name="com.application.hmkcopy.presentation.home.payment.PaymentErrorFragment"
+        android:label="fragment_payment_error"
+        tools:layout="@layout/fragment_payment_error" />
+    <fragment
+        android:id="@+id/paymentSuccessfulFragment"
+        android:name="com.application.hmkcopy.presentation.home.payment.PaymentSuccessfulFragment"
+        android:label="fragment_payment_successful"
+        tools:layout="@layout/fragment_payment_successful" />
+    <fragment
+        android:id="@+id/paymentWebViewFragment"
+        android:name="com.application.hmkcopy.presentation.home.payment.PaymentWebViewFragment"
+        android:label="fragment_payment_web_view"
+        tools:layout="@layout/fragment_payment_web_view" />
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.application.hmkcopy.presentation.home.order_detail.OrderDetailFragment"
+        android:label="OrderDetailFragment" />
 </navigation>

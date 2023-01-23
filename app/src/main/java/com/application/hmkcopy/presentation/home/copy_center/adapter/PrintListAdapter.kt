@@ -48,7 +48,7 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
 
         val paperSize = DropDownView(context).apply {
             title = item.printOptions.paperSize
-            description = "210 mm x 193 mm"
+            description = item.basketOptions.filter { item.printOptions.paperSize == it.size }.get(0).sizeText
             Collections.swap(papers, 0, index)
             items = papers
             onItemSelectedListener = { text, position ->

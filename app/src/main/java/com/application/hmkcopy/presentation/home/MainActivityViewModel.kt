@@ -30,6 +30,7 @@ class MainActivityViewModel @Inject constructor(
     val isDialogDisable = MutableLiveData(false)
 
     fun uploadDocument(file: File, name: String) {
+        toggleProgress(true)
         viewModelScope.launch {
             val checkResponse = documentRepository.uploadDocument(
                 name = name,
@@ -44,6 +45,7 @@ class MainActivityViewModel @Inject constructor(
                     name = name
                 )
             }
+
         }
     }
 
@@ -59,6 +61,7 @@ class MainActivityViewModel @Inject constructor(
             } else {
                 errorMessage.value = Event(ErrorModel(message = checkResponse.message()))
             }
+            toggleProgress(false)
         }
     }
 
@@ -74,18 +77,5 @@ class MainActivityViewModel @Inject constructor(
         } else {
             errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
         }
-    }
-
-    private fun getDocuments() {
-        viewModelScope.launch {
-            val response = documentRepository.getDocuments()
-            if (response.apiCallError == null) {
-                _documents.postValue(response)
-
-            } else {
-                errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
-            }
-        }
-
     }
 }

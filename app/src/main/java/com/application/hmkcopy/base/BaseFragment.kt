@@ -15,6 +15,7 @@ import androidx.viewbinding.ViewBinding
 import com.application.hmkcopy.navigation.NavigationCommand
 import com.application.hmkcopy.presentation.authentication.AuthenticationActivity
 import com.application.hmkcopy.presentation.home.MainActivity
+import com.application.hmkcopy.presentation.profile.ProfileActivity
 import com.application.hmkcopy.presentation.splash.SplashActivity
 import com.application.hmkcopy.util.LoadingView
 import com.application.hmkcopy.util.extentions.delay
@@ -63,6 +64,12 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
                 Log.d("TAG", "observeNavigation: $message")
             }
         }
+        viewModel?.successMessage?.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { message ->
+                successToast(message)
+                Log.d("TAG", "observeNavigation: $message")
+            }
+        }
         viewModel?.progress?.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { progress ->
                 if (progress) {
@@ -74,13 +81,25 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
         }
     }
 
-    fun errorToast(text: String) {
+    private fun errorToast(text: String) {
         context?.let {
             Toastic.toastic(
                 context = it,
                 message = text,
                 duration = Toastic.LENGTH_SHORT,
                 type = Toastic.ERROR,
+                isIconAnimated = true
+            ).show()
+        }
+
+    }
+    private fun successToast(text: String) {
+        context?.let {
+            Toastic.toastic(
+                context = it,
+                message = text,
+                duration = Toastic.LENGTH_SHORT,
+                type = Toastic.SUCCESS,
                 isIconAnimated = true
             ).show()
         }
@@ -113,7 +132,6 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
             delay(100) {
                 progress?.let {
                     progress.tag = -946
-
                     parent?.addView(it)
                 }
             }
@@ -152,5 +170,7 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
     fun authenticationActivity(): AuthenticationActivity? = activityAs<AuthenticationActivity>()
 
     fun splashActivity(): SplashActivity? = activityAs<SplashActivity>()
+
+    fun profileActivity(): ProfileActivity? = activityAs<ProfileActivity>()
 
 }

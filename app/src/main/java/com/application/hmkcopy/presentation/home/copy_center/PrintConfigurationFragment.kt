@@ -27,6 +27,7 @@ class PrintConfigurationFragment :
         binding.printConfigurationRecyclerView.adapter = adapter
         mainActivity()?.setPageDesc("Baskı Merkezi")
         mainActivity()?.setPageTitle("Online Copy Center")
+        mainActivity()?.changeMainIconToArrow()
         mainActivity()?.setBackButtonListeners {
             if (navController.currentDestination?.label == "print_configuration_fragment") {
                 viewModel.navigateBack()

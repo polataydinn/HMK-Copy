@@ -72,4 +72,18 @@
     <string name="upload_date_with_two_dots">Yüklenme Tarihi : </string>
     <string name="show_note">Notu Görüntüle</string>
     <string name="choose_print_settings">Baskı Seçeneklerini Belirle</string>
+    <string name="total">Toplam</string>
+    <string name="kdv_string">% 18 KDV Dahil</string>
+    <string name="confirm_order_privacy_policy"><a href='"wwww.sample.com"'>Mesafeli satış sözleşme</a> koşullarını okudum ve kabul ediyorum</string>
+    <string name="payment_successful_title">SİPARİŞİNİZ BAŞARIYLA ALINDI</string>
+    <string name="payment_successful_desc">Ödemeniz için teşekkürler. Siparişiniz başarıyla tamamlandı. Baskı süreciyle ilgili bilgilere Siparişlerim menüs ünden takip edebilirsiniz</string>
+    <string name="payment_error_desc">Ödeme yönetimiyle ilgili bir sorun oluştu. Bankanızdan tahsilat gerçekleştirilemedi. Ödeme yöntemini yeniden deneyebilir ya da başka bir kart bilgisi ile siparişi tamamlayabilirsiniz.</string>
+    <string name="payment_error_title">ÖDEME BAŞARISIZ OLDU</string>
+    <string name="credit_card_infos">KREDİ KART BİLGİLERİ</string>
+    <string name="name_on_credit_card">Kart üzerindeki isim</string>
+    <string name="card_number">Kart numarası</string>
+    <string name="exp_date_card">Son kullanım tarihi</string>
+    <string name="card_ccv">CCV</string>
+    <string name="sumbit_payment">Ödemeyi Tamamla</string>
+    <string name="order_date">Sipariş tarihi : </string>
 </resources>

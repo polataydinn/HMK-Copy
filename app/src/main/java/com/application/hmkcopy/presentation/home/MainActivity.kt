@@ -23,6 +23,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.application.hmkcopy.R
 import com.application.hmkcopy.databinding.ActivityMainBinding
 import com.application.hmkcopy.presentation.home.copy_center.PriceRowView
+import com.application.hmkcopy.presentation.profile.ProfileActivity
 import com.application.hmkcopy.service.response.SellersResponseItem
 import com.application.hmkcopy.util.AppPermission
 import com.application.hmkcopy.util.AppPermission.Companion.permissionGranted
@@ -42,12 +43,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pdfUri: Uri
 
     private var messageBoxInstance: AlertDialog? = null
+
     /**
      * Activity navController
      */
     val navController get() = navHostFragment.navController
 
     val bottomSheetContainer get() = binding.bottomSheetContainer
+
+    var currentPath = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,15 +63,39 @@ class MainActivity : AppCompatActivity() {
         setUpBottomNavigationListener()
         setUpBottomSheet()
         binding.mainFabButton.tag = R.drawable.ic_plus
+        val uri = intent.data
+        uri?.let {
+            currentPath = it.toString()
+        }
+        binding.mainUserAvatarCardView.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    fun setDocumentButtonListener(onItemClickListener: () -> Unit) {
+        binding.mainDocumentsButton.setOnClickListener {
+            binding.mainOrdersButton.alpha = 0.4f
+            binding.mainDocumentsButton.alpha = 1.0f
+            onItemClickListener.invoke()
+        }
+    }
+
+    fun setOrderDetailButtonListener(onItemClickListener: () -> Unit) {
+        binding.mainOrdersButton.setOnClickListener {
+            binding.mainOrdersButton.alpha = 1.0f
+            binding.mainDocumentsButton.alpha = 0.4f
+            onItemClickListener.invoke()
+        }
     }
 
     private fun setUpBottomSheet() {
         BottomSheetBehavior.from(binding.bottomSheet).apply {
             peekHeight = 600
             this.state = BottomSheetBehavior.STATE_COLLAPSED
-            this.addBottomSheetCallback(object  : BottomSheetBehavior.BottomSheetCallback() {
+            this.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED){
+                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                         bottomSheetContainer.isVisible = false
                     }
                 }
@@ -80,9 +108,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun shouldRefreshDocuments(refresh: (Boolean) -> Unit){
-        viewModel.isDialogDisable.observe(this){
-            if (it && messageBoxInstance != null){
+    fun shouldRefreshDocuments(refresh: (Boolean) -> Unit) {
+        viewModel.isDialogDisable.observe(this) {
+            if (it && messageBoxInstance != null) {
                 messageBoxInstance?.dismiss()
                 refresh.invoke(true)
                 viewModel.isDialogDisable.value = false
@@ -99,11 +127,11 @@ class MainActivity : AppCompatActivity() {
         //layoutParams.bottomToBottom = binding.root.id
     }
 
-    fun setPageTitleInvisible(){
+    fun setPageTitleInvisible() {
         binding.mainPageTitle.visibility = View.INVISIBLE
     }
 
-    fun setPageDescInvisible(){
+    fun setPageDescInvisible() {
         binding.mainPageDesc.visibility = View.INVISIBLE
     }
 
@@ -135,7 +163,7 @@ class MainActivity : AppCompatActivity() {
     fun setFabButtonClickListener(onItemClickListener: () -> Unit) {
         binding.mainFabButton.setOnClickListener {
             onItemClickListener()
-            if (binding.mainFabButton.tag == R.drawable.ic_plus){
+            if (binding.mainFabButton.tag == R.drawable.ic_plus) {
                 createDocumentUploadDialog()
             }
         }
@@ -145,7 +173,8 @@ class MainActivity : AppCompatActivity() {
         val messageBoxView = LayoutInflater.from(this)
             .inflate(R.layout.fragment_document_upload, null)
         val messageBoxBuilder = AlertDialog.Builder(this).setView(messageBoxView)
-        val documentUploadButton = messageBoxView.findViewById<FrameLayout>(R.id.dialog_document_upload_button)
+        val documentUploadButton =
+            messageBoxView.findViewById<FrameLayout>(R.id.dialog_document_upload_button)
         messageBoxInstance = messageBoxBuilder.show()
 
         messageBoxInstance?.window?.attributes?.gravity = Gravity.BOTTOM
@@ -185,7 +214,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             12 -> if (resultCode == RESULT_OK) {
-                if (data?.data == null){
+                if (data?.data == null) {
                     return
                 }
                 pdfUri = data.data!!
@@ -195,9 +224,11 @@ class MainActivity : AppCompatActivity() {
                 if (uriString.startsWith("content://")) {
                     var myCursor: Cursor? = null
                     try {
-                        myCursor = applicationContext!!.contentResolver.query(uri, null, null, null, null)
+                        myCursor =
+                            applicationContext!!.contentResolver.query(uri, null, null, null, null)
                         if (myCursor != null && myCursor.moveToFirst()) {
-                            pdfName = myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                            pdfName =
+                                myCursor.getString(myCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                         }
                     } finally {
                         myCursor?.close()
@@ -214,7 +245,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setBackButtonListeners(onItemClickListener: () -> Unit){
+    fun setBackButtonListeners(onItemClickListener: () -> Unit) {
         binding.mainBackButton.setOnClickListener {
             onItemClickListener()
         }
@@ -249,24 +280,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun makeBottomButtonsInvisible(){
+    fun makeBottomButtonsInvisible() {
         binding.mainDocumentsButton.visibility = View.GONE
         binding.mainOrdersButton.visibility = View.GONE
     }
-    fun makeBottomButtonsVisible(){
+
+    fun makeBottomButtonsVisible() {
         binding.mainDocumentsButton.visibility = View.VISIBLE
         binding.mainOrdersButton.visibility = View.VISIBLE
     }
 
-    fun makeFabButtonToChoose(){
+    fun makeFabButtonToChoose() {
         binding.mainFabButtonIcon.visibility = View.GONE
         binding.mainFabChooseButton.visibility = View.VISIBLE
         binding.mainFabButton.tag = 1000
     }
 
-    fun makeFabButtonToLeftArrow(){
+    fun makeFabButtonToLeftArrow() {
         binding.mainFabButtonIcon.visibility = View.VISIBLE
         binding.mainFabChooseButton.visibility = View.GONE
+    }
+
+    fun makeBottomNavigationVisible() {
+        binding.mainBottomNavigation.visibility = View.VISIBLE
+    }
+
+    fun makeBottomNavigationInvisible() {
+        binding.mainBottomNavigation.visibility = View.INVISIBLE
+    }
+
+    override fun onBackPressed() {
+        if (navController.currentDestination?.label == "OrderDetailFragment") {
+            binding.mainDocumentsButton.callOnClick()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     companion object {

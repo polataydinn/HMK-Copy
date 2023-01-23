@@ -2,7 +2,6 @@ package com.application.hmkcopy.service
 
 import com.application.hmkcopy.service.request.*
 import com.application.hmkcopy.service.response.*
-import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -64,5 +63,17 @@ interface Service {
 
     @GET("user/document/{documentId}/download")
     suspend fun downloadDocument(@Path("documentId") documentId: String):Response<UploadDocumentResponse>
+
+    @GET("checkout/payment/mobile")
+    suspend fun getPaymentWebView():Response<String>
+
+    @GET("user/order")
+    suspend fun getOrderedItems():Response<OrdersResponse>
+
+    @GET("user/me")
+    suspend fun getUserInfo():Response<UserInfoResponse>
+
+    @POST("auth/change-password")
+    suspend fun changeUserPassword(@Body changePassRequest: ChangePassRequest):Response<ChangePassResponse>
 
 }

@@ -2,9 +2,7 @@ package com.application.hmkcopy.repository.user
 
 import com.application.hmkcopy.service.Service
 import com.application.hmkcopy.service.request.*
-import com.application.hmkcopy.service.response.ApiCallError
-import com.application.hmkcopy.service.response.SendOTPResponse
-import com.application.hmkcopy.service.response.UserResponse
+import com.application.hmkcopy.service.response.*
 import com.application.hmkcopy.util.extentions.castError
 import com.application.hmkcopy.util.extentions.safeApiCall
 import javax.inject.Inject
@@ -55,12 +53,14 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun verifyPhone(code: String, token: String): ApiCallError? {
-        val response = safeApiCall { service.verifyPhone(
-            VerifyPhoneRequest(
-                code = code,
-                token = token
+        val response = safeApiCall {
+            service.verifyPhone(
+                VerifyPhoneRequest(
+                    code = code,
+                    token = token
+                )
             )
-        ) }
+        }
         return if (response.isSuccessful) {
             null
         } else {
@@ -135,4 +135,35 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun getUserData(): UserInfoResponse {
+        val response = safeApiCall {
+            service.getUserInfo()
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: UserInfoResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Kullanıcı bilgileri alınırken hata oluştu"
+                )
+            )
+        } else {
+            UserInfoResponse(apiCallError = response.castError())
+        }
+    }
+
+    suspend fun changePassword(changePassRequest: ChangePassRequest): ChangePassResponse {
+        val response = safeApiCall {
+            service.changeUserPassword(changePassRequest)
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: ChangePassResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Girilen şifre yanlış"
+                )
+            )
+        } else {
+            ChangePassResponse(apiCallError = response.castError())
+        }
+    }
 }

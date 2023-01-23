@@ -43,6 +43,7 @@ class AuthenticationViewModel @Inject constructor(
             errorMessage.value = Event(ErrorModel(message = "Lütfen Bir şifre giriniz"))
             return
         }
+        toggleProgress(true)
         viewModelScope.launch {
             val userResponse =
                 userRepository.registerUser(UserHelper.phoneNumber, nameAndSurname, password)
@@ -53,6 +54,7 @@ class AuthenticationViewModel @Inject constructor(
                 UserHelper.tokens = userResponse.tokens
                 navigate(RegisterNamePassFragmentDirections.toOTPFragment())
             }
+            toggleProgress(false)
         }
     }
 
@@ -61,6 +63,7 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     private fun sendVerificationCodePhone() {
+        toggleProgress(true)
         viewModelScope.launch {
             val otpResponse = userRepository.sendVerificationCodePhone()
             if (otpResponse.error != null) {
@@ -68,6 +71,7 @@ class AuthenticationViewModel @Inject constructor(
             } else {
                 otpToken = otpResponse.token
             }
+            toggleProgress(false)
         }
     }
 
@@ -87,6 +91,7 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     private fun verifyPhone(pin: String) {
+        toggleProgress(true)
         viewModelScope.launch {
             val checkResponse = userRepository.verifyPhone(code = pin, token = otpToken)
             if (checkResponse != null) {
@@ -94,10 +99,12 @@ class AuthenticationViewModel @Inject constructor(
             } else {
                 navigate(OTPinFragmentDirections.toAccountCreatedFragment())
             }
+            toggleProgress(false)
         }
     }
 
     private fun verifyCode(pin: String) {
+        toggleProgress(true)
         viewModelScope.launch {
             val checkResponse = userRepository.verifyCode(code = pin, token = otpToken)
             if (checkResponse != null) {
@@ -105,6 +112,7 @@ class AuthenticationViewModel @Inject constructor(
             } else {
                 navigate(OTPinFragmentDirections.toResetPasswordFragment())
             }
+            toggleProgress(false)
         }
     }
 
@@ -121,6 +129,7 @@ class AuthenticationViewModel @Inject constructor(
             errorMessage.value = Event(ErrorModel(message = "Lütfen Bir şifre giriniz"))
             return
         }
+        toggleProgress(true)
         viewModelScope.launch {
             val loginResponse = userRepository.login(phone, password)
             if (loginResponse.error != null) {
@@ -135,6 +144,7 @@ class AuthenticationViewModel @Inject constructor(
             UserHelper.user = loginResponse.user
             UserHelper.tokens = loginResponse.tokens
             navigate(NavigationCommand.ToActivity(MainActivity::class.java))
+            toggleProgress(false)
         }
     }
 
@@ -144,6 +154,7 @@ class AuthenticationViewModel @Inject constructor(
                 errorMessage.value = Event(ErrorModel(message = "Lütfen telefon numarası giriniz"))
                 return
             }
+            toggleProgress(true)
             viewModelScope.launch {
                 val otpResponse = userRepository.forgotPassword(phoneNumber)
                 if (otpResponse.error != null) {
@@ -153,6 +164,7 @@ class AuthenticationViewModel @Inject constructor(
                     UserHelper.phoneNumber = phoneNumber
                     navigate(ResetPasswordFragmentDirections.toOTPFragment(phoneNumber = phoneNumber))
                 }
+                toggleProgress(false)
             }
 
         }
@@ -163,6 +175,7 @@ class AuthenticationViewModel @Inject constructor(
             errorMessage.value = Event(ErrorModel(message = "Girilen şifreler eşleşmiyor"))
             return
         }
+        toggleProgress(true)
         viewModelScope.launch {
             val newPasswordResponse = userRepository.resetPassword(p1, otpToken)
             if (newPasswordResponse != null) {
@@ -170,6 +183,7 @@ class AuthenticationViewModel @Inject constructor(
             } else {
                 navigate(NewPasswordFragmentDirections.toResetPasswordDescFragment())
             }
+            toggleProgress(false)
         }
     }
 }

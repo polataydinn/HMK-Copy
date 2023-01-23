@@ -20,6 +20,8 @@ abstract class BaseViewModel : ViewModel() {
     val navigation = _navigation.asSharedFlow()
     var errorMessage = MutableLiveData<Event<ErrorModel>>()
 
+    var successMessage = MutableLiveData<Event<String>>()
+
     private val _progress = MutableLiveData<Event<Boolean>>()
     val progress: LiveData<Event<Boolean>>
         get() = _progress

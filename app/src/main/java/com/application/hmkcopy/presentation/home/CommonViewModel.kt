@@ -23,70 +23,10 @@ class CommonViewModel @Inject constructor(
     private var _isAnyItemSelected: MutableLiveData<Boolean> = MutableLiveData(false)
     val isAnyItemSelected: LiveData<Boolean> get() = _isAnyItemSelected
 
-    private var _copyCenterList: MutableLiveData<List<CopyCenterItem>> = MutableLiveData()
-    val copyCenterList: LiveData<List<CopyCenterItem>> get() = _copyCenterList
-
     private val _documents = MutableLiveData<List<DocumentsResponse.Documents.Result>?>()
     val documents get() = _documents
 
     val isGetDocument = MutableLiveData(false)
-
-    fun setCopyCenterListMockData() {
-        _copyCenterList.value = getCopyCenterList()
-    }
-
-    private fun getCopyCenterList(): List<CopyCenterItem> = listOf(
-        CopyCenterItem(
-            id = 1,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 2,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 3,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 4,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 5,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 6,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 7,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 8,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 9,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-        CopyCenterItem(
-            id = 10,
-            centerName = "Online copy center",
-            centerAddress = "Fatih Mahallesi Biruni Sokak No :10                    Tel: +90532 123 44 55"
-        ),
-    )
 
     fun setSelectedItem(document: DocumentsResponse.Documents.Result) {
         _documents.value = _documents.value?.map {

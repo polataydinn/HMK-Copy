@@ -82,7 +82,12 @@
         android:id="@+id/accountCreatedFragment"
         android:name="com.application.hmkcopy.presentation.authentication.AccountCreatedFragment"
         android:label="fragment_account_created"
-        tools:layout="@layout/fragment_account_created" />
+        tools:layout="@layout/fragment_account_created" >
+        <action
+            android:id="@+id/action_accountCreatedFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:launchSingleTop="true" />
+    </fragment>
     <fragment
         android:id="@+id/newPasswordFragment"
         android:name="com.application.hmkcopy.presentation.authentication.NewPasswordFragment"

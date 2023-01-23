@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -30,13 +31,34 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getDocuments()
+        setNavButtonListeners()
         setHeaders()
         setRecyclerView()
         setObservers()
         setItemListener()
         setButtonListeners()
+        checkDeepLink()
         mainActivity()?.changeMainIconToArrow()
         mainActivity()?.shouldRefreshDocuments { viewModel.getDocuments() }
+    }
+
+    private fun setNavButtonListeners() {
+        mainActivity()?.setOrderDetailButtonListener {
+            if (navController.currentDestination?.label == "fragment_my_orders") {
+                viewModel.navigate(MyOrdersFragmentDirections.actionMyOrdersFragmentToOrderDetailFragment())
+            }
+        }
+    }
+
+    private fun checkDeepLink() {
+        val path = mainActivity()?.currentPath
+        if (!path.isNullOrEmpty() && path.contains("/payment_successful_for_mobil")) {
+            findNavController().navigate(MyOrdersFragmentDirections.actionMyOrdersFragmentToPaymentSuccessfulFragment())
+            mainActivity()?.currentPath = ""
+        } else if (!path.isNullOrEmpty() && path.contains("payment_error_for_mobil")) {
+            findNavController().navigate(MyOrdersFragmentDirections.actionMyOrdersFragmentToPaymentErrorFragment())
+            mainActivity()?.currentPath = ""
+        }
     }
 
     private fun setHeaders() {
@@ -51,9 +73,12 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
         mainActivity()?.setFabButtonClickListener {
             if (viewModel.isAnyItemSelected.value == true && navController.currentDestination?.label == "fragment_my_orders") {
 
-                val documents = DocumentTransfer(listOfDocuments = viewModel.documents.value?.filter { it.isItemSelected })
+                val documents =
+                    DocumentTransfer(listOfDocuments = viewModel.documents.value?.filter { it.isItemSelected })
                 findNavController().navigate(
-                    MyOrdersFragmentDirections.actionMyOrdersFragmentToCopyCenterChooserFragment(documents)
+                    MyOrdersFragmentDirections.actionMyOrdersFragmentToCopyCenterChooserFragment(
+                        documents
+                    )
                 )
             }
         }

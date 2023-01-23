@@ -6,17 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
-import com.application.hmkcopy.data.model.CopyCenterItem
 import com.application.hmkcopy.databinding.FragmentCopyCenterChooserBinding
-import com.application.hmkcopy.presentation.home.CommonViewModel
 import com.application.hmkcopy.presentation.home.MainActivity
 import com.application.hmkcopy.presentation.home.copy_center.adapter.CopyCenterAdapter
-import com.application.hmkcopy.presentation.home.my_orders.MyOrdersFragmentDirections
-import com.google.android.material.textfield.TextInputLayout
+import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,8 +46,17 @@ class CopyCenterChooserFragment :
 
     private fun setAdapter() {
         binding.copyCenterRecyclerView.adapter = adapter
-        adapter.onItemClick = {
+        adapter.onShowInMapClick = {
             viewModel.navigate(CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToCopyCenterMapFragment(it, args.documentTransfer))
+        }
+        adapter.onItemClick = {
+            if (!it.id.isNullOrEmpty() && !args.documentTransfer.listOfDocuments.isNullOrEmpty()) {
+                val documents = args.documentTransfer.listOfDocuments?.filter { !it.id.isNullOrEmpty() }?.map { it.id }
+                viewModel.createCheckoutBasket(
+                    CreateCheckoutBasketRequest(documents = documents as List<String>),
+                    it.id
+                )
+            }
         }
     }
 
@@ -60,6 +64,14 @@ class CopyCenterChooserFragment :
         viewModel.sellers.observe(viewLifecycleOwner){
             adapter.clear()
             adapter.submitList(it)
+        }
+        viewModel.isCreateBasketSuccessful.observe(viewLifecycleOwner){
+            if (it){
+                viewModel.navigate(
+                    CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToPrintConfigurationFragment()
+                )
+                viewModel.basketSuccessful(false)
+            }
         }
     }
 

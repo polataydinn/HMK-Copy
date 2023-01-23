@@ -78,19 +78,25 @@ class OrderListViewHolder(private val binding: RowDocumentsItemBinding) :
                 rootParams.bottomMargin = SizeUtils.int2dp(root.context, 0)
             }
 
-            when(document?.isItemSelected){
+            when (document?.isItemSelected) {
                 true -> {
-                    root.background = ContextCompat.getDrawable(root.context, R.drawable.ic_document_item_selected);
+                    root.background = ContextCompat.getDrawable(
+                        root.context,
+                        R.drawable.ic_document_item_selected
+                    );
                 }
                 false -> {
-                    root.background = ContextCompat.getDrawable(root.context, R.drawable.ic_document_item);
+                    root.background =
+                        ContextCompat.getDrawable(root.context, R.drawable.ic_document_item);
                 }
                 else -> {}
             }
             documentItemLessonName.text = document?.name?.substringBeforeLast(".")
             documentsItemDocumentType.text = document?.name?.substringAfterLast(".")
             documentsItemPageCount.text = document?.pageCount.toString() + " Sayfa"
-            //documentsItemUploadDate.text = document?.uploadDate?.substring(0,10)
+            documentsItemUploadDate.text =
+                if (document?.uploadDate?.length!! >= 10) document.uploadDate.substring(0, 10)
+                else document.uploadDate
 
             documentItemNextButton.setOnClickListener {
                 document?.let { mDocument -> onItemClickListener?.invoke(mDocument) }

@@ -24,6 +24,8 @@ data class BasketOptionsResponse(
         @SerializedName("isOneSidedColored")
         val isOneSidedColored: Boolean = false,
         @SerializedName("size")
-        val size: String = ""
+        val size: String = "",
+        @SerializedName("sizeText")
+        val sizeText: String = ""
     ) : Parcelable
 }

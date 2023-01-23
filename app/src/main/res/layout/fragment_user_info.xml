@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:foreground="@color/transparent_black_55"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user_avatar" />
+                android:src="@color/black" />
 
             <ImageView
                 android:layout_width="20dp"

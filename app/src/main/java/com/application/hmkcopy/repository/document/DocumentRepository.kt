@@ -203,7 +203,7 @@ class DocumentRepository @Inject constructor(
         }
     }
 
-    suspend fun downloadDocumentInternal(documentId: String): UploadDocumentResponse{
+    suspend fun downloadDocumentInternal(documentId: String): UploadDocumentResponse {
         val response = safeApiCall {
             service.downloadDocument(documentId)
         }
@@ -216,6 +216,33 @@ class DocumentRepository @Inject constructor(
             )
         } else {
             UploadDocumentResponse(error = response.castError())
+        }
+    }
+
+    suspend fun getPaymentWebView(): String {
+        val response = safeApiCall {
+            service.getPaymentWebView()
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: ""
+        } else {
+            ""
+        }
+    }
+
+    suspend fun getOrderedItems(): OrdersResponse {
+        val response = safeApiCall {
+            service.getOrderedItems()
+        }
+        return if (response.isSuccessful) {
+            response.body() ?: OrdersResponse(
+                apiCallError = ApiCallError(
+                    "101",
+                    "Sepet alınırken hata olustu"
+                )
+            )
+        } else {
+            OrdersResponse(apiCallError = response.castError())
         }
     }
 }

@@ -9,6 +9,20 @@ plugins {
 
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('hmkcopy.jks')
+            storePassword 'hmkcopy2023'
+            keyAlias 'key0'
+            keyPassword 'hmkcopy2023'
+        }
+        release {
+            storeFile file('hmkcopy.jks')
+            storePassword 'hmkcopy2023'
+            keyAlias 'key0'
+            keyPassword 'hmkcopy2023'
+        }
+    }
     compileSdk 33
 
     defaultConfig {
@@ -93,6 +107,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     implementation "com.google.code.gson:gson:$retrofit_version"
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
 
     //Toast Message
     implementation 'com.github.yagmurerdogan:Toastic:1.0.1'

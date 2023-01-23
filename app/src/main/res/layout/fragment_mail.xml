@@ -95,7 +95,7 @@
         android:layout_height="46dp"
         android:layout_marginHorizontal="32dp"
         android:layout_marginBottom="58dp"
-        android:backgroundTint="@color/primary_background"
+        android:backgroundTint="@color/primary_button_background"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

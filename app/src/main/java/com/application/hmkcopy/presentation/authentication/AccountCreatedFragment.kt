@@ -23,16 +23,11 @@ class AccountCreatedFragment :
         return FragmentAccountCreatedBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     override fun configureCallbacks() {
         super.configureCallbacks()
         binding.apply {
             accountCreatedCreateOrderButton.setOnClickListener {
-                viewModel.navigate(NavigationCommand.ToActivity(MainActivity::class.java))
+                viewModel.navigate(AccountCreatedFragmentDirections.actionAccountCreatedFragmentToLoginFragment())
             }
         }
     }

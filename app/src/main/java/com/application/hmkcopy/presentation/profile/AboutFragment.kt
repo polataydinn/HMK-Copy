@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentAboutBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AboutFragment : BaseFragment<FragmentAboutBinding, ProfileViewModel>() {
     override val viewModel: ProfileViewModel by viewModels()
 
@@ -21,5 +23,16 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, ProfileViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun updateUI() {
+        super.updateUI()
+        profileActivity()?.setTitleVisibility(true)
+        profileActivity()?.setTitleText("Hakkında")
+        profileActivity()?.setBackButtonListener {
+            if (navController.currentDestination?.label == "fragment_about"){
+                viewModel.navigateBack()
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ import androidx.navigation.navGraphViewModels
 import com.application.hmkcopy.R
 import com.application.hmkcopy.base.BaseFragment
 import com.application.hmkcopy.databinding.FragmentLoginBinding
+import com.application.hmkcopy.repository.user.UserHelper
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, AuthenticationViewModel>() {
     override val viewModel: AuthenticationViewModel by hiltNavGraphViewModels(R.id.nav_authentication)
@@ -23,7 +24,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthenticationViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
+    override fun updateUI() {
+        super.updateUI()
+        binding.loginPhoneNumber.setText(UserHelper.phoneNumber)
     }
 
     override fun configureCallbacks() {
