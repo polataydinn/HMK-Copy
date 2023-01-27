@@ -81,8 +81,8 @@
         android:label="print_configuration_fragment"
         tools:layout="@layout/print_configuration_fragment" >
         <action
-            android:id="@+id/action_printConfigurationFragment_to_confirmOrderFragment"
-            app:destination="@id/confirmOrderFragment" />
+            android:id="@+id/action_printConfigurationFragment_to_copyCenterEnterNoteFragment"
+            app:destination="@id/copyCenterEnterNoteFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmOrderFragment"
@@ -111,5 +111,35 @@
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.application.hmkcopy.presentation.home.order_detail.OrderDetailFragment"
-        android:label="OrderDetailFragment" />
+        android:label="OrderDetailFragment" >
+        <action
+            android:id="@+id/action_orderDetailFragment_to_orderMoreDetailFragment"
+            app:destination="@id/orderMoreDetailFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/globalToMyOrderFragment"
+        app:destination="@id/myOrdersFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/copyCenterEnterNoteFragment"
+        android:name="com.application.hmkcopy.presentation.home.copy_center.CopyCenterEnterNoteFragment"
+        android:label="fragment_copy_center_enter_note"
+        tools:layout="@layout/fragment_copy_center_enter_note" >
+        <action
+            android:id="@+id/action_copyCenterEnterNoteFragment_to_confirmOrderFragment"
+            app:destination="@id/confirmOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderMoreDetailFragment"
+        android:name="com.application.hmkcopy.presentation.home.order_detail.OrderMoreDetailFragment"
+        android:label="fragment_order_more_detail"
+        tools:layout="@layout/fragment_order_more_detail" >
+        <argument
+            android:name="orderResponse"
+            app:argType="com.application.hmkcopy.service.response.OrdersResponse$Order" />
+    </fragment>
 </navigation>

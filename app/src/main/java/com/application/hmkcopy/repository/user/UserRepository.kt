@@ -1,5 +1,6 @@
 package com.application.hmkcopy.repository.user
 
+import com.application.hmkcopy.service.response.VerifyCodeResponse
 import com.application.hmkcopy.service.Service
 import com.application.hmkcopy.service.request.*
 import com.application.hmkcopy.service.response.*
@@ -68,7 +69,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun verifyCode(code: String, token: String): ApiCallError? {
+    suspend fun verifyCode(code: String, token: String): VerifyCodeResponse {
         val response = safeApiCall {
             service.verifyCode(
                 VerifyPhoneRequest(
@@ -78,9 +79,14 @@ class UserRepository @Inject constructor(
             )
         }
         return if (response.isSuccessful) {
-            null
+            response.body() ?: VerifyCodeResponse(
+                error = ApiCallError(
+                    "101",
+                    "Doğrulama kodu gönderilirken hata oluştu"
+                )
+            )
         } else {
-            response.castError<Unit, ApiCallError>()
+            VerifyCodeResponse(error = response.castError())
         }
     }
 
@@ -164,6 +170,17 @@ class UserRepository @Inject constructor(
             )
         } else {
             ChangePassResponse(apiCallError = response.castError())
+        }
+    }
+
+    suspend fun updateMe(updateMeRequest: UpdateMeRequest): ApiCallError? {
+        val response = safeApiCall {
+            service.updateMe(updateMeRequest)
+        }
+        return if (response.isSuccessful) {
+            null
+        } else {
+            response.castError<Unit, ApiCallError>()
         }
     }
 }

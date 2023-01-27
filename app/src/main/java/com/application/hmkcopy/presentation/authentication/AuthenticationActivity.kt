@@ -1,8 +1,13 @@
 package com.application.hmkcopy.presentation.authentication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.application.hmkcopy.R
+import com.application.hmkcopy.presentation.home.MainActivity
+import com.application.hmkcopy.presentation.onboarding.OnboardingActivity
+import com.application.hmkcopy.repository.user.UserHelper
+import com.application.hmkcopy.service.response.User
 import com.yagmurerdogan.toasticlib.Toastic
 import dagger.hilt.android.AndroidEntryPoint
 

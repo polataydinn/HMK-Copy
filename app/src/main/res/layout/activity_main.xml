@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="vm"
             type="com.application.hmkcopy.presentation.home.MainActivityViewModel"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.home.MainActivity">
@@ -29,27 +29,35 @@
             android:id="@+id/main_page_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:elevation="2dp"
+            android:fontFamily="@font/poppins_regular"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:visibility="invisible"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/main_header"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toEndOf="@+id/main_back_button"
-            app:layout_constraintTop_toTopOf="@+id/main_back_button"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toEndOf="@+id/main_user_avatar_card_view"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintVertical_bias="0.25"
             tools:text="Döküman Detayları" />
 
         <TextView
             android:id="@+id/main_page_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:elevation="5dp"
+            android:fontFamily="@font/poppins_regular"
             android:textColor="@color/white_light"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/main_fragment_container_view"
             app:layout_constraintStart_toStartOf="@+id/main_page_title"
             app:layout_constraintTop_toBottomOf="@+id/main_page_title"
+            app:layout_constraintVertical_bias="1"
+            tools:ignore="SmallSp"
             tools:text="Baskı Merkezi" />
 
 
@@ -76,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@color/app_yellow_1"/>
+                    android:src="@color/black"/>
             </androidx.cardview.widget.CardView>
 
         </androidx.cardview.widget.CardView>
@@ -86,7 +94,7 @@
             android:id="@+id/main_header"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/primary_background"
+            android:background="@color/primary_button_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -161,7 +169,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/ite_background_desc"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_main_background"
+                android:src="@drawable/ic_main_tab_bar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -239,8 +247,8 @@
 
                 <ImageView
                     android:id="@+id/main_fab_button_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:layout_gravity="center"
                     android:contentDescription="@string/main_bottom_bar_icon"
                     android:src="@drawable/ic_plus" />

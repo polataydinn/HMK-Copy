@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -12,6 +13,7 @@ import com.application.hmkcopy.databinding.FragmentCopyCenterChooserBinding
 import com.application.hmkcopy.presentation.home.MainActivity
 import com.application.hmkcopy.presentation.home.copy_center.adapter.CopyCenterAdapter
 import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
+import com.application.hmkcopy.util.AppPermission
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,6 +39,7 @@ class CopyCenterChooserFragment :
         setObservers()
         setButtonListeners()
         setFabButton()
+        mainActivity()?.setPageDescInvisible()
     }
 
     private fun setFabButton() {
@@ -47,26 +50,36 @@ class CopyCenterChooserFragment :
     private fun setAdapter() {
         binding.copyCenterRecyclerView.adapter = adapter
         adapter.onShowInMapClick = {
-            viewModel.navigate(CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToCopyCenterMapFragment(it, args.documentTransfer))
+            if (!AppPermission.permissionGranted(requireContext())) {
+                mainActivity()?.let { mainActivity -> AppPermission.requestPermission(mainActivity) }
+                Toast.makeText(
+                    requireContext(),
+                    "Konum izini vermeniz gerekmektedir.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                viewModel.navigate(
+                    CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToCopyCenterMapFragment(
+                        it,
+                        args.documentTransfer
+                    )
+                )
+            }
         }
         adapter.onItemClick = {
             if (!it.id.isNullOrEmpty() && !args.documentTransfer.listOfDocuments.isNullOrEmpty()) {
-                val documents = args.documentTransfer.listOfDocuments?.filter { !it.id.isNullOrEmpty() }?.map { it.id }
-                viewModel.createCheckoutBasket(
-                    CreateCheckoutBasketRequest(documents = documents as List<String>),
-                    it.id
-                )
+                viewModel.patchSeller(it.id)
             }
         }
     }
 
     private fun setObservers() {
-        viewModel.sellers.observe(viewLifecycleOwner){
+        viewModel.sellers.observe(viewLifecycleOwner) {
             adapter.clear()
             adapter.submitList(it)
         }
-        viewModel.isCreateBasketSuccessful.observe(viewLifecycleOwner){
-            if (it){
+        viewModel.isCreateBasketSuccessful.observe(viewLifecycleOwner) {
+            if (it) {
                 viewModel.navigate(
                     CopyCenterChooserFragmentDirections.actionCopyCenterChooserFragmentToPrintConfigurationFragment()
                 )

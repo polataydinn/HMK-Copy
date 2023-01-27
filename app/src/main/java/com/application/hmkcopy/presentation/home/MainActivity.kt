@@ -1,17 +1,21 @@
 package com.application.hmkcopy.presentation.home
 
 import android.annotation.SuppressLint
+import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.OpenableColumns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -22,17 +26,21 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import com.application.hmkcopy.R
 import com.application.hmkcopy.databinding.ActivityMainBinding
+import com.application.hmkcopy.presentation.authentication.AuthenticationActivity
 import com.application.hmkcopy.presentation.home.copy_center.PriceRowView
 import com.application.hmkcopy.presentation.profile.ProfileActivity
+import com.application.hmkcopy.repository.user.UserHelper
 import com.application.hmkcopy.service.response.SellersResponseItem
 import com.application.hmkcopy.util.AppPermission
 import com.application.hmkcopy.util.AppPermission.Companion.permissionGranted
 import com.application.hmkcopy.util.AppPermission.Companion.requestPermission
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -57,10 +65,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel.getUserData()
+        viewModel.userData.observe(this){
+            Glide.with(binding.mainUserAvatarImage)
+                .load(it.user?.avatar?.url)
+                .centerCrop()
+                .placeholder(R.color.black)
+                .into(binding.mainUserAvatarImage)
+
+            UserHelper.userEmail = it.user?.email ?: ""
+            UserHelper.userName = it.user?.name ?: ""
+        }
+
         navHostFragment =
             supportFragmentManager.findFragmentById(binding.mainFragmentContainerView.id) as NavHostFragment
         instance = this
-        setUpBottomNavigationListener()
         setUpBottomSheet()
         binding.mainFabButton.tag = R.drawable.ic_plus
         val uri = intent.data
@@ -70,6 +89,17 @@ class MainActivity : AppCompatActivity() {
         binding.mainUserAvatarCardView.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
+        }
+        if (!permissionGranted(this)) requestPermission(this)
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        if (UserHelper.tokens == null) {
+            val intent = Intent(this, AuthenticationActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -121,10 +151,6 @@ class MainActivity : AppCompatActivity() {
     fun setPageTitle(title: String) {
         binding.mainPageTitle.text = title
         binding.mainPageTitle.visibility = View.VISIBLE
-        val layoutParams: ConstraintLayout.LayoutParams =
-            binding.mainPageTitle.layoutParams as ConstraintLayout.LayoutParams
-        //layoutParams.horizontalBias = 0.4f
-        //layoutParams.bottomToBottom = binding.root.id
     }
 
     fun setPageTitleInvisible() {
@@ -133,14 +159,20 @@ class MainActivity : AppCompatActivity() {
 
     fun setPageDescInvisible() {
         binding.mainPageDesc.visibility = View.INVISIBLE
+          val layoutParams: ConstraintLayout.LayoutParams =
+        binding.mainPageTitle.layoutParams as ConstraintLayout.LayoutParams
+          layoutParams.horizontalBias = 0.35f
+          layoutParams.verticalBias = 0.5f
+         binding.mainPageTitle.layoutParams = layoutParams
     }
 
     fun setPageDesc(description: String) {
         binding.mainPageDesc.text = description
         binding.mainPageDesc.visibility = View.VISIBLE
-        val layoutParams: ConstraintLayout.LayoutParams =
-            binding.mainPageTitle.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.horizontalBias = 0.2f
+        val layoutParamsTitle: ConstraintLayout.LayoutParams = binding.mainPageTitle.layoutParams as ConstraintLayout.LayoutParams
+        layoutParamsTitle.horizontalBias = 0.25f
+        layoutParamsTitle.verticalBias = 0.0f
+        binding.mainPageTitle.layoutParams = layoutParamsTitle
     }
 
     fun setAvatarVisible() {
@@ -155,6 +187,19 @@ class MainActivity : AppCompatActivity() {
 
     fun changeMainIconToArrow() {
         binding.mainFabButtonIcon.setImageResource(R.drawable.ic_arrow_right_main)
+        binding.mainFabButtonIcon.visibility = View.VISIBLE
+        binding.mainFabChooseButton.visibility = View.GONE
+        binding.mainFabButton.tag = R.drawable.ic_arrow_right_main
+    }
+
+    fun changeIconToRefresh() {
+        binding.mainFabButtonIcon.setImageResource(R.drawable.ic_refresh_white)
+        binding.mainFabButtonIcon.visibility = View.VISIBLE
+        binding.mainFabChooseButton.visibility = View.GONE
+        binding.mainFabButton.tag = R.drawable.ic_refresh_white
+    }
+    fun changeMainIconToClose() {
+        binding.mainFabButtonIcon.setImageResource(R.drawable.ic_close_white)
         binding.mainFabButtonIcon.visibility = View.VISIBLE
         binding.mainFabChooseButton.visibility = View.GONE
         binding.mainFabButton.tag = R.drawable.ic_arrow_right_main
@@ -256,18 +301,6 @@ class MainActivity : AppCompatActivity() {
         binding.mainFabButton.tag = R.drawable.ic_plus
     }
 
-    private fun setUpBottomNavigationListener() {
-        binding.apply {
-            mainDocumentsButton.setOnClickListener {
-
-            }
-
-            mainOrdersButton.setOnClickListener {
-
-            }
-        }
-    }
-
     fun setUpBottomSheet(seller: SellersResponseItem) {
         binding.content.apply {
             storeName.text = seller.name
@@ -312,9 +345,101 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (navController.currentDestination?.label == "OrderDetailFragment") {
             binding.mainDocumentsButton.callOnClick()
-        } else {
+        } else if (navController.currentDestination?.label == "fragment_payment_web_view"){
+            viewModel.popBackToMain()
+        } else{
             super.onBackPressed()
         }
+    }
+
+    @SuppressLint("Range")
+    fun startFile(fileUrl: String?) {
+        val manager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager?
+        val uri: Uri =
+            Uri.parse(fileUrl)
+        val request = DownloadManager.Request(uri)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+        val documentNamePrev = fileUrl?.substringAfterLast(".s3.eu-central-1.amazonaws.com/")
+        val documentExt = documentNamePrev?.substringAfter(".")?.substringBefore("-")
+        val documentName = documentNamePrev?.substringBefore(".")
+        val finalDocumentName = "$documentName.$documentExt"
+        request.setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_DOWNLOADS,
+            finalDocumentName
+        )
+        val reference = manager?.enqueue(request)
+        val query = reference?.let { DownloadManager.Query().setFilterById(it) }
+        val cursor = manager?.query(query)
+
+        if (cursor?.moveToFirst() == true) {
+            val fileUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))
+            val intent = Intent(Intent.ACTION_VIEW)
+            try {
+                intent.setDataAndType(Uri.parse(fileUri), "application/$documentExt")
+                intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                startActivity(intent)
+            } catch (e: java.lang.Exception) {
+            }
+        }
+        cursor?.close()
+    }
+
+    fun downloadFile(url: String?) {
+        val documentNamePrev = url?.substringAfterLast(".s3.eu-central-1.amazonaws.com/")
+        val documentExt = documentNamePrev?.substringAfter(".")?.substringBefore("-")
+        val documentName = documentNamePrev?.substringBefore(".")
+        val finalDocumentName = "$documentName.$documentExt"
+        var localUri: Uri? = null
+
+        val request: DownloadManager.Request
+        val manager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+        val uri = Uri.parse(url) // A url to download a file
+        try {
+            request = DownloadManager.Request(uri)
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+            return
+        }
+        request.setVisibleInDownloadsUi(true)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+        try {
+            val downloadFileDir = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    .getAbsolutePath() + "/Contents"
+            )
+            if (downloadFileDir != null) {
+                if (!downloadFileDir.exists()) {
+                    downloadFileDir.mkdirs()
+                }
+                val file = File(downloadFileDir.absolutePath + File.separator + finalDocumentName)
+                if (file.exists()) {
+                    file.delete()
+                }
+                localUri = Uri.fromFile(file)
+                request.setDestinationUri(localUri)
+                if (localUri != null) {
+                    request.setMimeType(
+                        MimeTypeMap.getSingleton()
+                            .getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(localUri.toString()))
+                    )
+                }
+            }
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        }
+        request.setTitle(finalDocumentName)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        try {
+            manager.enqueue(request)
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+            //Got exception here
+        }
+
+        intent.setDataAndType(localUri, "application/$documentExt")
+        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+        startActivity(intent)
+
     }
 
     companion object {

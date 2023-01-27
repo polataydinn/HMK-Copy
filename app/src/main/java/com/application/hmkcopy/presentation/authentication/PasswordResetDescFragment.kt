@@ -24,7 +24,12 @@ class PasswordResetDescFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.passwordResetDescBackButton.setOnClickListener {
+            viewModel.navigateBack()
+        }
+        binding.passwordResetDescContinueButton.setOnClickListener {
+            viewModel.navigate(PasswordResetDescFragmentDirections.actionPasswordResetDescFragmentToAuthenticationFragment())
+        }
     }
 
 }

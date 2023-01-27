@@ -10,6 +10,8 @@ object UserHelper {
 
     object Key {
         const val authorization = "UserHelper.Key.authorization"
+        const val email = "UserHelper.Key.email"
+        const val name = "UserHelper.Key.name"
         const val phoneNumber = "UserHelper.Key.phoneNumber"
         const val tokens = "UserHelper.Key.tokens"
         const val user = "UserHelper.Key.user"
@@ -92,6 +94,24 @@ object UserHelper {
         }
         set(value) {
             SharedPreferences.put(Key.tokens, Gson().toJson(value ?: ""))
+        }
+
+    var userEmail: String
+        get() {
+            val userEmail = SharedPreferences.getString(Key.email)
+            return userEmail.ifEmpty { "" }
+        }
+        set(value) {
+            SharedPreferences.put(Key.email, value)
+        }
+
+    var userName: String
+        get() {
+            val userName = SharedPreferences.getString(Key.name)
+            return userName.ifEmpty { "" }
+        }
+        set(value) {
+            SharedPreferences.put(Key.name, value)
         }
 
 }

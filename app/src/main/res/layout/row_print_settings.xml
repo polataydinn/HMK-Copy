@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    android:background="@drawable/custom_button_background"
+    android:background="@drawable/custom_card_background"
     android:paddingBottom="16dp">
 
     <androidx.cardview.widget.CardView
@@ -39,25 +39,19 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Tıbbi Terminoloji Ders Notu" />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/upload_date_with_two_dots"
-                android:textColor="#CC000000"
-                app:layout_constraintStart_toStartOf="@+id/print_settings_document_name"
-                app:layout_constraintTop_toBottomOf="@+id/print_settings_document_name" />
 
             <TextView
                 android:id="@+id/print_settings_upload_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textColor="#CC1E35E3"
+                android:textColor="@color/primary_background"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="@+id/print_settings_document_name"
-                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintStart_toStartOf="@+id/print_settings_document_name"
                 app:layout_constraintTop_toBottomOf="@+id/print_settings_document_name"
-                tools:text="31 Kasım 2022" />
+                tools:text="Tek Taraflı Baskı sayfa sayısı 100"
+                tools:ignore="SmallSp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/print_settings_download_document_button"
@@ -66,8 +60,8 @@
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/primary_background"
                 app:cardCornerRadius="6dp"
-                app:layout_constraintStart_toStartOf="@+id/textView7"
-                app:layout_constraintTop_toBottomOf="@+id/textView7">
+                app:layout_constraintStart_toStartOf="@+id/print_settings_upload_date"
+                app:layout_constraintTop_toBottomOf="@+id/print_settings_upload_date">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -86,6 +80,7 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:textColor="@color/black"
+                android:fontFamily="@font/poppins_regular"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/print_settings_download_document_button"
                 app:layout_constraintEnd_toEndOf="@+id/print_settings_upload_date"
@@ -103,7 +98,7 @@
         android:fontFamily="@font/poppins_regular"
         android:text="@string/choose_print_settings"
         android:textColor="@color/primary_background"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -121,8 +116,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:orientation="vertical"
         android:divider="@drawable/divider_transparent"
+        android:orientation="vertical"
         android:showDividers="middle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/print_settings_info_button"

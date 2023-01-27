@@ -27,6 +27,11 @@ class PaymentSuccessfulFragment :
             setPageTitle("Sipariş Tamamlandı")
             setBackButtonVisible()
         }
+        mainActivity()?.setBackButtonListeners {
+            if (navController.currentDestination?.label == "fragment_payment_successful"){
+                viewModel.popBackToMain()
+            }
+        }
     }
 
     override fun onDestroyView() {

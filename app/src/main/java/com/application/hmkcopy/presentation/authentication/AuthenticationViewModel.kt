@@ -29,7 +29,7 @@ class AuthenticationViewModel @Inject constructor(
             }
             UserHelper.phoneNumber = phoneNumber
             navigate(EnterPhoneFragmentDirections.toRegisterWithPhoneNumberFragment())
-        }else {
+        } else {
             errorMessage.value = Event(ErrorModel(message = "Lütfen 10 haneli numara giriniz"))
         }
     }
@@ -107,10 +107,11 @@ class AuthenticationViewModel @Inject constructor(
         toggleProgress(true)
         viewModelScope.launch {
             val checkResponse = userRepository.verifyCode(code = pin, token = otpToken)
-            if (checkResponse != null) {
+            if (checkResponse.error != null) {
                 errorMessage.value = Event(ErrorModel(message = checkResponse.message))
             } else {
-                navigate(OTPinFragmentDirections.toResetPasswordFragment())
+                otpToken = checkResponse.token ?: ""
+                navigate(OTPinFragmentDirections.toResetPasswordFragment(checkResponse.token ?: ""))
             }
             toggleProgress(false)
         }
@@ -134,11 +135,13 @@ class AuthenticationViewModel @Inject constructor(
             val loginResponse = userRepository.login(phone, password)
             if (loginResponse.error != null) {
                 errorMessage.value = Event(ErrorModel(message = loginResponse.error.message))
+                toggleProgress(false)
                 return@launch
             }
             if (loginResponse.user.isPhoneVerified.not()) {
                 UserHelper.phoneNumber = loginResponse.user.phone
                 navigate(LoginFragmentDirections.toOTPFragment())
+                toggleProgress(false)
                 return@launch
             }
             UserHelper.user = loginResponse.user
@@ -177,7 +180,8 @@ class AuthenticationViewModel @Inject constructor(
         }
         toggleProgress(true)
         viewModelScope.launch {
-            val newPasswordResponse = userRepository.resetPassword(p1, otpToken)
+            val newPasswordResponse =
+                userRepository.resetPassword(p1, otpToken)
             if (newPasswordResponse != null) {
                 errorMessage.value = Event(ErrorModel(message = newPasswordResponse.message))
             } else {

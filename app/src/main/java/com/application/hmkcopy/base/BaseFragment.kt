@@ -12,15 +12,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.viewbinding.ViewBinding
+import com.application.hmkcopy.event.Event
 import com.application.hmkcopy.navigation.NavigationCommand
 import com.application.hmkcopy.presentation.authentication.AuthenticationActivity
 import com.application.hmkcopy.presentation.home.MainActivity
 import com.application.hmkcopy.presentation.profile.ProfileActivity
 import com.application.hmkcopy.presentation.splash.SplashActivity
+import com.application.hmkcopy.service.ErrorModel
 import com.application.hmkcopy.util.LoadingView
 import com.application.hmkcopy.util.extentions.delay
 import com.yagmurerdogan.toasticlib.Toastic
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
 
@@ -74,11 +79,37 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
             it.getContentIfNotHandled()?.let { progress ->
                 if (progress) {
                     showProgress()
+                    startTimer()
                 } else {
                     hideProgress()
                 }
             }
         }
+
+    }
+    private fun startCoroutineTimer(delayMillis: Long = 0, action: () -> Unit) = lifecycleScope.launch(
+        Dispatchers.IO) {
+        delay(delayMillis){
+            action()
+        }
+    }
+
+    private val timer: Job = startCoroutineTimer(delayMillis = 10000) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (viewModel?.progress?.value?.getContentIfNotHandled() == false){
+                cancelTimer()
+                viewModel?.errorMessage?.value = Event(ErrorModel(message = "Internet bağlantısını kontrol ediniz."))
+                viewModel?.toggleProgress(false)
+            }
+        }
+    }
+
+    fun startTimer() {
+        timer.start()
+    }
+
+    fun cancelTimer() {
+        timer.cancel()
     }
 
     private fun errorToast(text: String) {

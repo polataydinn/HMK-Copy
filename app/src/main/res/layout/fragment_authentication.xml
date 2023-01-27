@@ -24,7 +24,7 @@
         android:layout_height="46dp"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="64dp"
-        android:background="@drawable/custom_phone_button_background"
+        android:background="@drawable/custom_register_button_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/authentication_logo_image">

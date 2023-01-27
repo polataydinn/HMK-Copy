@@ -33,13 +33,20 @@ class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding, OrderViewMo
 
     private fun adapterListener() {
         adapter.onItemClick = {
-
+            val status = it.status
+            val seller = it.seller
+            val tempItem = it
+            tempItem.products?.forEach { item ->
+                item?.seller = seller
+                item?.status = status
+            }
+            viewModel.navigate(OrderDetailFragmentDirections.actionOrderDetailFragmentToOrderMoreDetailFragment(tempItem))
         }
     }
 
     private fun setBottomButtonListener() {
         mainActivity()?.setDocumentButtonListener {
-            if (navController.currentDestination?.label == "OrderDetailFragment"){
+            if (navController.currentDestination?.label == "OrderDetailFragment") {
                 viewModel.navigateBack()
             }
         }
@@ -47,8 +54,8 @@ class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding, OrderViewMo
 
     override fun configureObservers() {
         super.configureObservers()
-        viewModel.orders.observe(viewLifecycleOwner){
-            adapter.submitList(it)
+        viewModel.orders.observe(viewLifecycleOwner) {
+            adapter.submitList(it.orders)
         }
     }
 

@@ -42,10 +42,10 @@ class OrderConfirmAdapter :
             addView(PriceListView(context).apply {
                 if (index == 0) {
                     orderName = item.name
-                    orderPrice = item.price.toString()
+                    orderPrice = item.price.toString() + " TRY"
                 } else {
                     orderName = item.name
-                    orderPrice = "+${item.price}"
+                    orderPrice = "+${item.price} TRY"
                 }
 
             })

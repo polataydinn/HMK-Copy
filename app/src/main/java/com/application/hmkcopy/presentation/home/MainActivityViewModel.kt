@@ -1,13 +1,16 @@
 package com.application.hmkcopy.presentation.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.application.hmkcopy.base.BaseViewModel
 import com.application.hmkcopy.event.Event
 import com.application.hmkcopy.repository.document.DocumentRepository
+import com.application.hmkcopy.repository.user.UserRepository
 import com.application.hmkcopy.service.ErrorModel
 import com.application.hmkcopy.service.request.UploadVerifyRequest
 import com.application.hmkcopy.service.response.DocumentsResponse
+import com.application.hmkcopy.service.response.UserInfoResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -15,11 +18,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val documentRepository: DocumentRepository
+    private val documentRepository: DocumentRepository,
+    private val repository: UserRepository
 ) : BaseViewModel() {
 
     private val _documents = MutableLiveData<DocumentsResponse>()
     val documents get() = _documents
+
+    private val _userData : MutableLiveData<UserInfoResponse> = MutableLiveData()
+    val userData : LiveData<UserInfoResponse> get() = _userData
 
     val isChooseSelected = MutableLiveData<Boolean>()
 
@@ -28,6 +35,20 @@ class MainActivityViewModel @Inject constructor(
     }
 
     val isDialogDisable = MutableLiveData(false)
+
+
+
+
+    fun getUserData(){
+        viewModelScope.launch {
+            val response = repository.getUserData()
+            if (response.apiCallError != null) {
+                errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
+            } else {
+                _userData.postValue(response)
+            }
+        }
+    }
 
     fun uploadDocument(file: File, name: String) {
         toggleProgress(true)
@@ -41,7 +62,7 @@ class MainActivityViewModel @Inject constructor(
                 uploadImageWithNewUrl(
                     file = file,
                     url = checkResponse.presignedUrl?.url?.substringAfter(".amazonaws.com/") ?: "",
-                    key = checkResponse.presignedUrl?.url ?: "",
+                    key = checkResponse.presignedUrl?.key ?: "",
                     name = name
                 )
             }

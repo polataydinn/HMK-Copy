@@ -4,6 +4,7 @@ package com.application.hmkcopy.service.response
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Parcelize
 data class UserInfoResponse(
@@ -17,6 +18,12 @@ data class UserInfoResponse(
 ) : Parcelable {
     @Parcelize
     data class User(
+        @SerialName("address")
+        val address: String? = "",
+        @SerialName("avatar")
+        val avatar: Avatar? = Avatar(),
+        @SerialName("email")
+        val email: String? = "",
         @SerialName("id")
         val id: String? = "",
         @SerialName("isEmailVerified")
@@ -33,5 +40,11 @@ data class UserInfoResponse(
         val registerDate: String? = "",
         @SerialName("role")
         val role: String? = ""
-    ): Parcelable
+    ) : Parcelable {
+        @Parcelize
+        data class Avatar(
+            @SerialName("url")
+            val url: String? = ""
+        ) : Parcelable
+    }
 }

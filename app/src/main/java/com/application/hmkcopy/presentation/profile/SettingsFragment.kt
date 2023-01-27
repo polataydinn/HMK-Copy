@@ -60,9 +60,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
             }
             settingsExitButton.setOnClickListener {
                 viewModel.logout()
-                val intent = Intent(profileActivity(), AuthenticationActivity::class.java)
-                startActivity(intent)
-                profileActivity()?.finish()
+                profileActivity()?.navigateAuthenticationActivity()
             }
         }
     }

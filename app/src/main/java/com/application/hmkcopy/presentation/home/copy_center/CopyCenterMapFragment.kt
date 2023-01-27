@@ -53,8 +53,8 @@ class CopyCenterMapFragment : BaseFragment<FragmentCopyCenterMapBinding, CopyCen
     }
 
     private fun subscribeObservers() {
-        viewModel.isCreateBasketSuccessful.observe(viewLifecycleOwner){
-            if (it){
+        viewModel.isCreateBasketSuccessful.observe(viewLifecycleOwner) {
+            if (it) {
                 viewModel.navigate(
                     CopyCenterMapFragmentDirections.toConfigurationFragment()
                 )
@@ -71,12 +71,8 @@ class CopyCenterMapFragment : BaseFragment<FragmentCopyCenterMapBinding, CopyCen
         mainActivity()?.setFabButtonClickListener {
             if (navController.currentDestination?.label == "fragment_copy_center_map") {
                 viewModel.selectedSeller.value?.let { selectedSeller ->
-                    if (!selectedSeller.id.isNullOrEmpty() && !args.documentTransferMap.listOfDocuments.isNullOrEmpty()) {
-                        val documents = args.documentTransferMap.listOfDocuments?.filter { !it.id.isNullOrEmpty() }?.map { it.id }
-                        viewModel.createCheckoutBasket(
-                            CreateCheckoutBasketRequest(documents = documents as List<String>),
-                            selectedSeller.id
-                        )
+                    if (!selectedSeller.id.isNullOrEmpty()) {
+                        viewModel.patchSeller(selectedSeller.id)
                     }
                 }
             }

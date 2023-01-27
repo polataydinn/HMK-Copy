@@ -17,19 +17,19 @@ class OrderViewModel @Inject constructor(
     private val repository: DocumentRepository
 ) : BaseViewModel() {
 
-    private val _orders: MutableLiveData<List<OrdersResponse.Order?>> = MutableLiveData()
-    val orders : LiveData<List<OrdersResponse.Order?>> get() = _orders
+    private val _orders: MutableLiveData<OrdersResponse> = MutableLiveData()
+    val orders : LiveData<OrdersResponse> get() = _orders
 
     fun getOrderedItems(){
         viewModelScope.launch {
+            toggleProgress(true)
             val response = repository.getOrderedItems()
             if (response.apiCallError != null) {
                 errorMessage.value = Event(ErrorModel(message = response.apiCallError.message))
             } else {
-                response.orders?.let {
-                    _orders.postValue(it)
-                }
+                _orders.postValue(response)
             }
+            toggleProgress(false)
         }
     }
 }

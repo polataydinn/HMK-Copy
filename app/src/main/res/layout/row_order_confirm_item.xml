@@ -46,7 +46,7 @@
                 android:divider="@drawable/divider_transparent"
                 android:orientation="vertical"
                 android:showDividers="middle"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="6dp"
                 android:layout_marginHorizontal="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

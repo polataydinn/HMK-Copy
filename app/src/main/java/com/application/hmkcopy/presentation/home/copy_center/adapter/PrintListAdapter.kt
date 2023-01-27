@@ -20,13 +20,14 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
     var onItemSelectedListener: (String, String, PrintViewOptions) -> Unit = { _, _, _ -> }
     var onDocumentDownload: (ProductListItem) -> Unit = {}
     var isExpanded: (ProductListItem) -> Unit = {}
+    var isInfoButtonClicked: (() -> Unit)? = null
 
     inner class ViewHolder(private val binding: RowPrintSettingsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProductListItem) {
             binding.apply {
                 printSettingsDocumentName.text = item.name
-                printSettingsUploadDate.text = item.uploadDate
+                printSettingsUploadDate.text = item.priceInfoText.first().name
                 printSettingsDocumentPrice.text = "${item.prices.price} TL"
                 printSettingsDownloadDocumentButton.setOnClickListener {
                     onDocumentDownload(item)
@@ -36,6 +37,9 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
                     isExpanded(item)
                 }
                 printSettingsLinearContainer.setUpOptions(item)
+                printSettingsInfoButton.setOnClickListener {
+                    isInfoButtonClicked?.invoke()
+                }
             }
 
         }
@@ -47,7 +51,7 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
         val index = papers.indexOf(item.printOptions.paperSize)
 
         val paperSize = DropDownView(context).apply {
-            title = item.printOptions.paperSize
+            title = item.printOptions.paperSize ?: ""
             description = item.basketOptions.filter { item.printOptions.paperSize == it.size }.get(0).sizeText
             Collections.swap(papers, 0, index)
             items = papers
@@ -109,10 +113,10 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
             addView(oneSide)
         }
         val squareItems = prepareSquareItems()
-        val indexOfSquare = squareItems.indexOf(paperSquare(item.printOptions.paperSquare))
+        val indexOfSquare = squareItems.indexOf(paperSquare(item.printOptions.paperSquare ?: 0))
         val fillThePage = DropDownView(context).apply {
-            title = paperSquare(item.printOptions.paperSquare)
-            description = paperSquareDescription(item.printOptions.paperSquare)
+            title = paperSquare(item.printOptions.paperSquare ?: 0)
+            description = paperSquareDescription(item.printOptions.paperSquare ?: 0)
             Collections.swap(squareItems, 0, indexOfSquare)
             items = squareItems
             onItemSelectedListener = { text, position ->
@@ -131,7 +135,7 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
             val selectableColoredView = SelectableView(context).apply {
                 text1 = "Renkli Baski"
                 text2 = "Herbir sayfa için +${item.prices.coloredPrice} TL"
-                isChecked = item.printOptions.isColored
+                isChecked = item.printOptions.isColored ?: false
                 onCheckStateChanged = { isChecked ->
                     this@PrintListAdapter.onCheckStateChanged(
                         isChecked,
@@ -145,7 +149,7 @@ class PrintListAdapter : BaseListAdapter<ProductListItem, PrintListAdapter.ViewH
         val selectableSpiralledView = SelectableView(context).apply {
             text1 = "Spiral Ciltleme"
             text2 = "Her bir cilt için +${item.prices.spiralledPrice} TL"
-            isChecked = item.printOptions.isSpiralled
+            isChecked = item.printOptions.isSpiralled ?: false
             onCheckStateChanged = { isChecked ->
                 this@PrintListAdapter.onCheckStateChanged(
                     isChecked,

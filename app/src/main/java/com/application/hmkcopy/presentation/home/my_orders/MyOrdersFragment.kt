@@ -13,6 +13,7 @@ import com.application.hmkcopy.data.model.DocumentTransfer
 import com.application.hmkcopy.databinding.FragmentMyOrdersBinding
 import com.application.hmkcopy.presentation.home.CommonViewModel
 import com.application.hmkcopy.presentation.home.MainActivity
+import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,10 +53,10 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
 
     private fun checkDeepLink() {
         val path = mainActivity()?.currentPath
-        if (!path.isNullOrEmpty() && path.contains("/payment_successful_for_mobil")) {
+        if (!path.isNullOrEmpty() && path.contains("/success")) {
             findNavController().navigate(MyOrdersFragmentDirections.actionMyOrdersFragmentToPaymentSuccessfulFragment())
             mainActivity()?.currentPath = ""
-        } else if (!path.isNullOrEmpty() && path.contains("payment_error_for_mobil")) {
+        } else if (!path.isNullOrEmpty() && path.contains("fail")) {
             findNavController().navigate(MyOrdersFragmentDirections.actionMyOrdersFragmentToPaymentErrorFragment())
             mainActivity()?.currentPath = ""
         }
@@ -72,14 +73,11 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
     private fun setButtonListeners() {
         mainActivity()?.setFabButtonClickListener {
             if (viewModel.isAnyItemSelected.value == true && navController.currentDestination?.label == "fragment_my_orders") {
-
                 val documents =
                     DocumentTransfer(listOfDocuments = viewModel.documents.value?.filter { it.isItemSelected })
-                findNavController().navigate(
-                    MyOrdersFragmentDirections.actionMyOrdersFragmentToCopyCenterChooserFragment(
-                        documents
-                    )
-                )
+                viewModel.createCheckoutBasket(CreateCheckoutBasketRequest(documents.listOfDocuments?.map {
+                    it.id ?: ""
+                } ?: listOf("")))
             }
         }
     }
@@ -98,6 +96,17 @@ class MyOrdersFragment : BaseFragment<FragmentMyOrdersBinding, CommonViewModel>(
         viewModel.isAnyItemSelected.observe(viewLifecycleOwner) {
             if (it) mainActivity()?.changeMainIconToArrow()
             else mainActivity()?.changeMainIconToPlus()
+        }
+
+        viewModel.shouldNavigate.observe(viewLifecycleOwner){
+            if (it){
+                val documents =
+                    DocumentTransfer(listOfDocuments = viewModel.documents.value?.filter { result -> result.isItemSelected })
+                findNavController().navigate(
+                    MyOrdersFragmentDirections.actionMyOrdersFragmentToCopyCenterChooserFragment(documents)
+                )
+                viewModel.shouldNavigate.postValue(false)
+            }
         }
     }
 

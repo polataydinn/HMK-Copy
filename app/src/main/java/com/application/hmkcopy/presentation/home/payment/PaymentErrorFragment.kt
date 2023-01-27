@@ -18,4 +18,26 @@ class PaymentErrorFragment : BaseFragment<FragmentPaymentErrorBinding, CopyCente
     ): FragmentPaymentErrorBinding {
         return FragmentPaymentErrorBinding.inflate(inflater, container, false)
     }
+
+    override fun updateUI() {
+        super.updateUI()
+        mainActivity()?.apply {
+            makeBottomNavigationInvisible()
+            setPageTitle("Sipariş Tamamlandı")
+            setBackButtonVisible()
+        }
+        mainActivity()?.setBackButtonListeners {
+            if (navController.currentDestination?.label == "fragment_payment_error"){
+                viewModel.popBackToMain()
+            }
+        }
+        binding.tryAgainButton.setOnClickListener {
+            viewModel.popBackToMain()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mainActivity()?.makeBottomNavigationVisible()
+    }
 }

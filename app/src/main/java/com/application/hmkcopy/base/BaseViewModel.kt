@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
+import com.application.hmkcopy.NavMainDirections
 import com.application.hmkcopy.event.Event
 import com.application.hmkcopy.navigation.NavigationCommand
 import com.application.hmkcopy.presentation.home.copy_center.adapter.PrintViewOptions
@@ -31,6 +32,8 @@ abstract class BaseViewModel : ViewModel() {
             _navigation.emit(NavigationCommand.ToDirection(navDirections))
         }
     }
+
+    fun popBackToMain() = navigate(NavMainDirections.globalToMyOrderFragment())
 
     fun navigate(uri: Uri) {
         viewModelScope.launch {

@@ -111,4 +111,11 @@ dependencies {
 
     //Toast Message
     implementation 'com.github.yagmurerdogan:Toastic:1.0.1'
+
+    //Country-Code Picker
+    implementation 'com.github.onstonboy:CountryCodePicker:1.1.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+
 }

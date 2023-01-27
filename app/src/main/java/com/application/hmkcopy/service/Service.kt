@@ -26,7 +26,7 @@ interface Service {
     suspend fun forgotPassword(@Body forgotPasswordRequest: ForgotPasswordRequest): Response<SendOTPResponse>
 
     @POST("auth/verify-code")
-    suspend fun verifyCode(@Body verifyPhoneRequest: VerifyPhoneRequest): Response<Unit>
+    suspend fun verifyCode(@Body verifyPhoneRequest: VerifyPhoneRequest): Response<VerifyCodeResponse>
 
     @POST("auth/reset-password")
     suspend fun resetPassword(@Body resetPasswordRequest: ResetPasswordRequest): Response<Unit>
@@ -56,24 +56,33 @@ interface Service {
     suspend fun checkout(): Response<CheckoutResponse>
 
     @PATCH("checkout/{productId}")
-    suspend fun updateProduct(@Path("productId") productId: String, @Body updateBasketRequest: CheckoutResponse.Checkout.Product.PrintOptions): Response<Unit>
+    suspend fun updateProduct(
+        @Path("productId") productId: String,
+        @Body updateBasketRequest: CheckoutResponse.Checkout.Product.PrintOptions
+    ): Response<Unit>
 
     @GET("checkout/seller/options")
     suspend fun getBasketOptions(): Response<BasketOptionsResponse>
 
     @GET("user/document/{documentId}/download")
-    suspend fun downloadDocument(@Path("documentId") documentId: String):Response<UploadDocumentResponse>
+    suspend fun downloadDocument(@Path("documentId") documentId: String): Response<DocumentDownloadResponse>
 
     @GET("checkout/payment/mobile")
-    suspend fun getPaymentWebView():Response<String>
+    suspend fun getPaymentWebView(): Response<String>
 
     @GET("user/order")
-    suspend fun getOrderedItems():Response<OrdersResponse>
+    suspend fun getOrderedItems(): Response<OrdersResponse>
 
     @GET("user/me")
-    suspend fun getUserInfo():Response<UserInfoResponse>
+    suspend fun getUserInfo(): Response<UserInfoResponse>
 
     @POST("auth/change-password")
-    suspend fun changeUserPassword(@Body changePassRequest: ChangePassRequest):Response<ChangePassResponse>
+    suspend fun changeUserPassword(@Body changePassRequest: ChangePassRequest): Response<ChangePassResponse>
+
+    @PATCH("checkout/note")
+    suspend fun addNote(@Body noteRequest: NoteRequest): Response<Unit>
+
+    @PATCH("user/me")
+    suspend fun updateMe(@Body updateMeRequest: UpdateMeRequest): Response<Unit>
 
 }

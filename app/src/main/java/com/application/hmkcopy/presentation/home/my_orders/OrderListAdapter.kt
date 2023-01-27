@@ -82,12 +82,12 @@ class OrderListViewHolder(private val binding: RowDocumentsItemBinding) :
                 true -> {
                     root.background = ContextCompat.getDrawable(
                         root.context,
-                        R.drawable.ic_document_item_selected
+                        R.drawable.custom_button_background
                     );
                 }
                 false -> {
                     root.background =
-                        ContextCompat.getDrawable(root.context, R.drawable.ic_document_item);
+                        ContextCompat.getDrawable(root.context, R.drawable.custom_card_background);
                 }
                 else -> {}
             }
@@ -99,11 +99,11 @@ class OrderListViewHolder(private val binding: RowDocumentsItemBinding) :
                 else document.uploadDate
 
             documentItemNextButton.setOnClickListener {
-                document?.let { mDocument -> onItemClickListener?.invoke(mDocument) }
+                document.let { mDocument -> onItemClickListener?.invoke(mDocument) }
             }
 
             root.setOnClickListener {
-                document?.let { mDocument -> onItemSelectListener?.invoke(mDocument) }
+                document.let { mDocument -> onItemSelectListener?.invoke(mDocument) }
             }
         }
     }

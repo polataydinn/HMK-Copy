@@ -1,7 +1,10 @@
 package com.application.hmkcopy.service.response
+
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 data class CheckoutResponse(
     @SerializedName("checkout")
@@ -12,91 +15,101 @@ data class CheckoutResponse(
     val message: String = "",
     val apiCallError: ApiCallError? = null
 ) {
+    @Serializable
     data class Checkout(
-        @SerializedName("active")
-        val active: Boolean = false,
-        @SerializedName("id")
-        val id: String = "",
-        @SerializedName("isMobile")
-        val isMobile: Boolean = false,
-        @SerializedName("products")
-        val products: List<Product> = listOf(),
-        @SerializedName("seller")
-        val seller: String = "",
-        @SerializedName("status")
-        val status: String = "",
-        @SerializedName("totalAmount")
-        val totalAmount: Double = 0.0,
-        @SerializedName("user")
-        val user: String = ""
+        @SerialName("active")
+        val active: Boolean? = false,
+        @SerialName("id")
+        val id: String? = "",
+        @SerialName("isMobile")
+        val isMobile: Boolean? = false,
+        @SerialName("products")
+        val products: List<Product?> = listOf(),
+        @SerialName("status")
+        val status: String? = "",
+        @SerialName("totalAmount")
+        val totalAmount: Int? = 0,
+        @SerialName("user")
+        val user: String? = ""
     ) {
+        @Serializable
         data class Product(
-            @SerializedName("document")
-            val document: Document = Document(),
-            @SerializedName("id")
-            val id: String = "",
-            @SerializedName("pageCount")
-            val pageCount: Int = 0,
-            @SerializedName("priceInfoText")
-            val priceInfoText: List<PriceInfoText> = listOf(),
-            @SerializedName("prices")
-            val prices: Prices = Prices(),
-            @SerializedName("printOptions")
-            val printOptions: PrintOptions = PrintOptions(),
-            @SerializedName("printingPageCount")
-            val printingPageCount: Int = 0
+            @SerialName("document")
+            val document: Document? = Document(),
+            @SerialName("id")
+            val id: String? = "",
+            @SerialName("pageCount")
+            val pageCount: Int? = 0,
+            @SerialName("priceInfoText")
+            val priceInfoText: List<PriceInfoText?>? = listOf(),
+            @SerialName("prices")
+            val prices: Prices? = Prices(),
+            @SerialName("printOptions")
+            val printOptions: PrintOptions? = PrintOptions(),
+            @SerialName("printingPageCount")
+            val printingPageCount: Int? = 0
         ) {
+            @Serializable
             data class Document(
-                @SerializedName("accessUsers")
-                val accessUsers: List<Any> = listOf(),
-                @SerializedName("documentNumber")
-                val documentNumber: String = "",
-                @SerializedName("id")
-                val id: String = "",
-                @SerializedName("key")
-                val key: String = "",
-                @SerializedName("name")
-                val name: String = "",
-                @SerializedName("pageCount")
-                val pageCount: Int = 0,
-                @SerializedName("user")
-                val user: String = ""
+                @SerialName("accessUsers")
+                val accessUsers: List<Any?>? = listOf(),
+                @SerialName("documentNumber")
+                val documentNumber: String? = "",
+                @SerialName("id")
+                val id: String? = "",
+                @SerialName("key")
+                val key: String? = "",
+                @SerialName("name")
+                val name: String? = "",
+                @SerialName("pageCount")
+                val pageCount: Int? = 0,
+                @SerialName("uploadDate")
+                val uploadDate: String? = "",
+                @SerialName("user")
+                val user: String? = ""
             )
 
+            @Serializable
             data class PriceInfoText(
-                @SerializedName("_id")
-                val id: String = "",
-                @SerializedName("name")
-                val name: String = "",
-                @SerializedName("price")
-                val price: Double = 0.0
+                @SerialName("_id")
+                val id: String? = "",
+                @SerialName("key")
+                val key: Int? = 0,
+                @SerialName("name")
+                val name: String? = "",
+                @SerialName("price")
+                val price: Double? = 0.0
             )
 
+            @Serializable
             data class Prices(
-                @SerializedName("coloredPrice")
-                val coloredPrice: Double = 0.0,
-                @SerializedName("price")
-                val price: Double = 0.0,
-                @SerializedName("spiralledPrice")
-                val spiralledPrice: Double = 0.0
+                @SerialName("coloredPrice")
+                val coloredPrice: Double? = 0.0,
+                @SerialName("price")
+                val price: Double? = 0.0,
+                @SerialName("spiralledPrice")
+                val spiralledPrice: Double? = 0.0
             )
+
             @Parcelize
             data class PrintOptions(
-                @SerializedName("isColored")
-                val isColored: Boolean = false,
-                @SerializedName("isCovered")
-                val isCovered: Boolean = false,
-                @SerializedName("isSpiralled")
-                val isSpiralled: Boolean = false,
-                @SerializedName("paperDirection")
-                val paperDirection: String = "",
-                @SerializedName("paperSide")
-                val paperSide: Int = 0,
-                @SerializedName("paperSize")
-                val paperSize: String = "",
-                @SerializedName("paperSquare")
-                val paperSquare: Int = 0
+                @SerialName("isColored")
+                val isColored: Boolean? = false,
+                @SerialName("isCovered")
+                val isCovered: Boolean? = false,
+                @SerialName("isSpiralled")
+                val isSpiralled: Boolean? = false,
+                @SerialName("paperDirection")
+                val paperDirection: String? = "",
+                @SerialName("paperSide")
+                val paperSide: Int? = 0,
+                @SerialName("paperSize")
+                val paperSize: String? = "",
+                @SerialName("paperSquare")
+                val paperSquare: Int? = 0
             ) : Parcelable
         }
+
+
     }
 }

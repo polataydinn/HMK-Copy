@@ -54,6 +54,7 @@ class PrintConfigurationViewModel @Inject constructor(
         itemId: String,
         updateBasketRequest: CheckoutResponse.Checkout.Product.PrintOptions
     ) {
+        toggleProgress(true)
         viewModelScope.launch {
             val response = repository.updateBasket(itemId, updateBasketRequest)
             if (response.apiCallError != null) {
@@ -72,6 +73,7 @@ class PrintConfigurationViewModel @Inject constructor(
                     }
                 _items.value = mCheckout
             }
+            toggleProgress(false)
         }
     }
 

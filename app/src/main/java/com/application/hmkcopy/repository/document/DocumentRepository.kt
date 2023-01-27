@@ -2,10 +2,7 @@ package com.application.hmkcopy.repository.document
 
 import com.application.hmkcopy.service.Service
 import com.application.hmkcopy.service.UploadService
-import com.application.hmkcopy.service.request.CreateCheckoutBasketRequest
-import com.application.hmkcopy.service.request.SellerPatchRequest
-import com.application.hmkcopy.service.request.UploadDocumentRequest
-import com.application.hmkcopy.service.request.UploadVerifyRequest
+import com.application.hmkcopy.service.request.*
 import com.application.hmkcopy.service.response.*
 import com.application.hmkcopy.util.extentions.castError
 import com.application.hmkcopy.util.extentions.safeApiCall
@@ -203,21 +200,22 @@ class DocumentRepository @Inject constructor(
         }
     }
 
-    suspend fun downloadDocumentInternal(documentId: String): UploadDocumentResponse {
+    suspend fun downloadDocument(documentId: String): DocumentDownloadResponse {
         val response = safeApiCall {
             service.downloadDocument(documentId)
         }
-        return if (response.isSuccessful && response.body()?.presignedUrl?.url?.isNotEmpty() == true) {
-            response.body() ?: UploadDocumentResponse(
+        return if (response.isSuccessful && response.body()?.presignedUrl?.isNotEmpty() == true) {
+            response.body() ?: DocumentDownloadResponse(
                 error = ApiCallError(
                     "101",
                     "Sepet alınırken hata olustu"
                 )
             )
         } else {
-            UploadDocumentResponse(error = response.castError())
+            DocumentDownloadResponse(error = response.castError())
         }
     }
+
 
     suspend fun getPaymentWebView(): String {
         val response = safeApiCall {
@@ -243,6 +241,17 @@ class DocumentRepository @Inject constructor(
             )
         } else {
             OrdersResponse(apiCallError = response.castError())
+        }
+    }
+
+    suspend fun addNote(addNote: NoteRequest): ApiCallError? {
+        val response = safeApiCall {
+            service.addNote(addNote)
+        }
+        return if (response.isSuccessful) {
+            null
+        } else {
+            response.castError<Unit, ApiCallError>()
         }
     }
 }

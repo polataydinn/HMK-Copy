@@ -27,6 +27,11 @@ class PaymentWebViewFragment : BaseFragment<FragmentPaymentWebViewBinding, Payme
         super.onViewCreated(view, savedInstanceState)
         viewModel.getWebView()
         mainActivity()?.makeBottomNavigationInvisible()
+        mainActivity()?.setBackButtonListeners {
+            if (navController.currentDestination?.label == "fragment_payment_web_view"){
+                viewModel.popBackToMain()
+            }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")

@@ -1,0 +1,56 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="8">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:fontFamily="@font/poppins_regular"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="Sipariş numarası "
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:text=":"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:layout_marginStart="12dp"
+            tools:text="Sipariş numarası"
+            android:textColor="@color/primary_background"
+            android:textSize="12sp" />
+        
+        <ImageView
+            android:id="@+id/isVisible"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"
+            android:src="@drawable/oc_tick_square"/>
+    </FrameLayout>
+
+    
+</LinearLayout>

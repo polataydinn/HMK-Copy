@@ -31,48 +31,8 @@
 
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.gonderciksin.com/start_mobil_application" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.gonderciksin.com/start_mobil_application" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="www.gonderciksin.com/start_mobil_application" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="www.gonderciksin.com/start_mobil_application" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".presentation.authentication.AuthenticationActivity"
@@ -87,88 +47,20 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
-                    android:scheme="https"
-                    android:host="www.gonderciksin.com"
-                    android:path="/payment_successful_for_mobil" />
+                    android:path="/success"
+                    android:pathPattern="\?"
+                    android:scheme="pdfApp" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
-                    android:scheme="https"
-                    android:host="www.gonderciksin.com"
-                    android:path="/payment_successful_for_mobil" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.gonderciksin.com/payment_error_for_mobil"
-                    android:path="/payment_successful_for_mobil" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.gonderciksin.com/payment_error_for_mobil"
-                    android:path="/payment_successful_for_mobil" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="www.gonderciksin.com"
-                    android:path="/payment_successful_for_mobil" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="www.gonderciksin.com"
-                    android:path="/payment_successful_for_mobil" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="www.gonderciksin.com/payment_error_for_mobil"
-                    android:path="/payment_successful_for_mobil" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="www.gonderciksin.com/payment_error_for_mobil"
-                    android:path="/payment_successful_for_mobil" />
+                    android:path="/fail"
+                    android:pathPattern="\?"
+                    android:scheme="pdfApp" />
             </intent-filter>
         </activity>
         <activity
@@ -179,6 +71,16 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:path="/start_mobil_application"
+                    android:pathPattern="\?"
+                    android:scheme="hmkcopy" />
             </intent-filter>
         </activity>
     </application>

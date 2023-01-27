@@ -1,10 +1,11 @@
 package com.application.hmkcopy.presentation.profile
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.application.hmkcopy.databinding.ActivityProfileBinding
+import com.application.hmkcopy.presentation.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,23 +18,29 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    fun setSettingsButtonListener(onItemClick: () -> Unit){
+    fun setSettingsButtonListener(onItemClick: () -> Unit) {
         binding.profileActivitySettingsButton.setOnClickListener {
             onItemClick.invoke()
         }
     }
-    fun setBackButtonListener(onItemClick: () -> Unit){
+
+    fun setBackButtonListener(onItemClick: () -> Unit) {
         binding.profileActivityBackButton.setOnClickListener {
             onItemClick.invoke()
         }
     }
 
-    fun setTitleVisibility(isVisible: Boolean){
+    fun setTitleVisibility(isVisible: Boolean) {
         binding.profileActivitySettingsButton.isVisible = !isVisible
         binding.profileMainTitle.isVisible = isVisible
     }
 
-    fun setTitleText(title: String){
+    fun setTitleText(title: String) {
         binding.profileMainTitle.text = title
+    }
+
+    fun navigateAuthenticationActivity() {
+        onBackPressed()
+        finish()
     }
 }
