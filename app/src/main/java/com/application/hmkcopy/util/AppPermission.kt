@@ -14,13 +14,14 @@ class AppPermission {
             ContextCompat.checkSelfPermission(context, WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(context, CAMERA) == PERMISSION_GRANTED
 
 
         fun requestPermission(activity: MainActivity) {
             ActivityCompat.requestPermissions(
                 activity,
-                arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION),
+                arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, CAMERA),
                 REQUEST_PERMISSION
             )
         }

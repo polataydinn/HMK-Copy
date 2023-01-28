@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -180,4 +181,16 @@ abstract class BaseFragment<V : ViewBinding, VM : BaseViewModel?> : Fragment() {
 
     fun profileActivity(): ProfileActivity? = activityAs<ProfileActivity>()
 
+
+    fun Fragment.showDialog(dialog: DialogFragment, name: String) {
+        val ft = activity?.supportFragmentManager?.beginTransaction()
+        val prev = activity?.supportFragmentManager?.findFragmentByTag(name)
+        if (prev != null)
+        {
+            ft?.remove(prev)
+        }
+        ft?.addToBackStack(null)
+        if(ft != null)
+            dialog.show(ft, name)
+    }
 }

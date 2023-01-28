@@ -9,20 +9,7 @@ plugins {
 
 
 android {
-    signingConfigs {
-        debug {
-            storeFile file('hmkcopy.jks')
-            storePassword 'hmkcopy2023'
-            keyAlias 'key0'
-            keyPassword 'hmkcopy2023'
-        }
-        release {
-            storeFile file('hmkcopy.jks')
-            storePassword 'hmkcopy2023'
-            keyAlias 'key0'
-            keyPassword 'hmkcopy2023'
-        }
-    }
+
     compileSdk 33
 
     defaultConfig {
@@ -55,6 +42,8 @@ android {
 }
 
 dependencies {
+    implementation project(':documentscanner')
+
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'

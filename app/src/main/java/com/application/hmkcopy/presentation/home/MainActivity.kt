@@ -6,11 +6,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,6 +22,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import com.application.hmkcopy.R
@@ -29,21 +30,27 @@ import com.application.hmkcopy.databinding.ActivityMainBinding
 import com.application.hmkcopy.presentation.authentication.AuthenticationActivity
 import com.application.hmkcopy.presentation.home.copy_center.PriceRowView
 import com.application.hmkcopy.presentation.profile.ProfileActivity
+import com.application.hmkcopy.presentation.scanner.ImageCropDialog
 import com.application.hmkcopy.repository.user.UserHelper
 import com.application.hmkcopy.service.response.SellersResponseItem
 import com.application.hmkcopy.util.AppPermission
 import com.application.hmkcopy.util.AppPermission.Companion.permissionGranted
 import com.application.hmkcopy.util.AppPermission.Companion.requestPermission
+import com.application.hmkcopy.util.HMCopyFileProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private lateinit var documentImageUri: Uri
+    private lateinit var cameraPhotoDocFile: File
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: NavHostFragment
 
@@ -214,6 +221,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun createDocumentUploadDialog() {
         val messageBoxView = LayoutInflater.from(this)
             .inflate(R.layout.fragment_document_upload, null)
@@ -227,7 +235,7 @@ class MainActivity : AppCompatActivity() {
 
         documentUploadButton.setOnClickListener {
             if (!permissionGranted(this)) requestPermission(this)
-            selectPdf()
+            dispatchTakePictureDocumentIntent()
         }
 
     }
@@ -247,6 +255,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun scanner(documentImageUri: Uri) {
+        val dialog = ImageCropDialog(imageUri = documentImageUri) {
+
+        }
+        dialog.show(supportFragmentManager, "hello world")
+    }
+
+    private fun dispatchTakePictureDocumentIntent() {
+        cameraPhotoDocFile = createImageFile()
+        documentImageUri = FileProvider.getUriForFile(
+            this,
+            HMCopyFileProvider.AUTHORITY,
+            cameraPhotoDocFile
+        )
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, documentImageUri)
+        }
+        startActivityForResult(takePictureIntent, 1)
+    }
+
+    private fun createImageFile(): File {
+        val timestamp = SimpleDateFormat("ddMMyyyy", Locale.ROOT).format(Date())
+        val imageFileName = "photo_${timestamp}_"
+        val storageDir = File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_DCIM), HMCopyFileProvider.PATH_PICTURES)
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
+        return File.createTempFile(
+            imageFileName,
+            ".jpg",
+            storageDir)
+    }
+
     private fun selectPdf() {
         val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
         pdfIntent.type = "application/pdf"
@@ -258,6 +300,9 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
+            1 -> {
+                scanner(documentImageUri)
+            }
             12 -> if (resultCode == RESULT_OK) {
                 if (data?.data == null) {
                     return
