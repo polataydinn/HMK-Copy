@@ -82,7 +82,6 @@ class MainActivityViewModel @Inject constructor(
             } else {
                 errorMessage.value = Event(ErrorModel(message = checkResponse.message()))
             }
-            toggleProgress(false)
         }
     }
 

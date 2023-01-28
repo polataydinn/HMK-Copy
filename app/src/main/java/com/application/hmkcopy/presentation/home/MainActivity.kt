@@ -435,11 +435,6 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
             //Got exception here
         }
-
-        intent.setDataAndType(localUri, "application/$documentExt")
-        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-        startActivity(intent)
-
     }
 
     companion object {

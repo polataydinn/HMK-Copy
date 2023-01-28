@@ -23,7 +23,7 @@ fun mainColor(context: Context, id: Int): Int {
     return ContextCompat.getColor(context, id)
 }
 
-fun delay(time: Long, callback: Callback) {
+fun delayp(time: Long, callback: Callback) {
     Handler(Looper.getMainLooper()).postDelayed({
         callback.invoke()
     }, time)

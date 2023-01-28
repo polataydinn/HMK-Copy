@@ -29,10 +29,6 @@ class LoadingView(
                 this.alpha = if (isOpaque) 1F else 0.1F
             }
         }
-
-        binding.circularIndicator.apply {
-            setIndicatorColor(if (isWhite) R.color.app_black_1 else R.color.app_white)
-        }
     }
 
 }
